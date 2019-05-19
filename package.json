@@ -31,7 +31,14 @@
   "keywords": [
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "google",
+    "auth",
+    "firebase",
+    "angular",
+    "vue",
+    "react",
+    "ionic"
   ],
   "capacitor": {
     "ios": {
