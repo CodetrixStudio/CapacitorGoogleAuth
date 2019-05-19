@@ -38,6 +38,7 @@ async googleSignIn() {
 
 ### iOS
 Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
+
 Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
 
 ### Support
