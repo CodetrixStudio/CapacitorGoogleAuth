@@ -5,5 +5,5 @@ declare module "@capacitor/core" {
 }
 
 export interface GoogleAuthPlugin {
-  echo(options: { value: string }): Promise<{value: string}>;
+  signIn(options: { value: string }): Promise<{value: string}>;
 }

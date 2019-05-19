@@ -5,6 +5,9 @@ target 'Plugin' do
   use_frameworks!
   pod 'Capacitor', :path => '../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../node_modules/@capacitor/ios'
+
+  pod 'GoogleSignIn'
+  
 end
 
 target 'PluginTests' do

@@ -2,10 +2,30 @@ PODS:
   - Capacitor (1.0.0-beta.25):
     - CapacitorCordova (= 1.0.0-beta.25)
   - CapacitorCordova (1.0.0-beta.25)
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.0):
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+  - GoogleToolboxForMac/Defines (2.2.0)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.0)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.0)
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
+  - GTMSessionFetcher/Core (1.2.1)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
+  - GoogleSignIn
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -16,7 +36,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: be6076128754206ad87165889480b99dbb17e879
   CapacitorCordova: f60ef624dfdb9b48155c19949d14efb66a617a9c
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
+  GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
 
-PODFILE CHECKSUM: f03b26adb49049a0bb1aa97947081598c42c91f7
+PODFILE CHECKSUM: eccdd9f2ade1c8a39f3e138264c56b51b599ded6
 
 COCOAPODS: 1.6.1
