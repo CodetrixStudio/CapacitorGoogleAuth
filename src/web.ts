@@ -8,6 +8,10 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       platforms: ['web']
     });
 
+    this.initialize();
+  }
+
+  initialize() {
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
