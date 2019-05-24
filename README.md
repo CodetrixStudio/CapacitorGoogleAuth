@@ -9,7 +9,7 @@ npx cap update
 ```
 
 ### WEB
-Add `clientId` meta tag to head.
+Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#specify_your_apps_client_id) meta tag to head.
 ```html
 <meta name="google-signin-client_id" content="{your client id here}">
 ```
