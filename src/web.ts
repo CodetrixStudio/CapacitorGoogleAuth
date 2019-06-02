@@ -38,6 +38,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
       const user = {
         authentication: {
+          accessToken: googleUser.getAuthResponse().access_token,
           idToken: googleUser.getAuthResponse().id_token
         }
       }
