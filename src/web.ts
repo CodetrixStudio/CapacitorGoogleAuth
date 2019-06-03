@@ -36,10 +36,12 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
       const googleUser = await gapi.auth2.getAuthInstance().signIn();
 
+      const authResponse = googleUser.getAuthResponse(true);
+
       const user = {
         authentication: {
-          accessToken: googleUser.getAuthResponse().access_token,
-          idToken: googleUser.getAuthResponse().id_token
+          accessToken: authResponse.access_token,
+          idToken: authResponse.id_token
         }
       }
 
