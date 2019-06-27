@@ -34,6 +34,12 @@ public class GoogleAuth: CAPPlugin {
             }
         }
     }
+
+    @objc
+    func signOut(_ call: CAPPluginCall) {
+        GIDSignIn.sharedInstance().signOut();
+        call.success();
+    }
     
     @objc
     func handleOpenUrl(_ notification: Notification) {
