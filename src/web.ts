@@ -47,6 +47,10 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       resolve(user);
     });
   }
+
+  async signOut(): Promise<any> {
+    return gapi.auth2.getAuthInstance().signOut();
+  }
 }
 
 const GoogleAuth = new GoogleAuthWeb();
