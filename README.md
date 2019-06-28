@@ -41,6 +41,19 @@ Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
 
 Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
 
+### Configure
+Provide configuration in root `capacitor.config.json`
+```json
+{
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": ["profile", "email"]
+    }
+  }
+}
+
+```
+
 ### Support
 ✔️ iOS
 

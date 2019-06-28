@@ -1,5 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import { GoogleAuthPlugin } from './definitions';
+// @ts-ignore
+import config from '../../../../../capacitor.config.json';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   constructor() {
@@ -27,6 +29,11 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       const clientConfig: gapi.auth2.ClientConfig = {
         client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content
       };
+
+      if (config.plugins.GoogleAuth != null && config.plugins.GoogleAuth.scopes != null) {
+        clientConfig.scope = config.plugins.GoogleAuth.scopes.join(' ');
+      }
+
       gapi.auth2.init(clientConfig);
     });
   }

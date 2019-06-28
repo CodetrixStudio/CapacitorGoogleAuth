@@ -8,29 +8,34 @@ import GoogleSignIn
  */
 @objc(GoogleAuth)
 public class GoogleAuth: CAPPlugin {
-    var pluginCall: CAPPluginCall?
+    var signInCall: CAPPluginCall?
+    let googleSignIn: GIDSignIn = GIDSignIn.sharedInstance();
     
     public override func load() {
         guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {return}
         guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
         guard let clientId = dict["CLIENT_ID"] as? String else {return}
         
-        GIDSignIn.sharedInstance().clientID = clientId;
-        GIDSignIn.sharedInstance().delegate = self;
-        GIDSignIn.sharedInstance().uiDelegate = self;
+        googleSignIn.clientID = clientId;
+        googleSignIn.delegate = self;
+        googleSignIn.uiDelegate = self;
+        
+        if let scopes = getConfigValue("scopes") as? [String] {
+            googleSignIn.scopes = scopes;
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
     }
     
     @objc
     func signIn(_ call: CAPPluginCall) {
-        pluginCall = call;
+        signInCall = call;
         
         DispatchQueue.main.async {
-            if GIDSignIn.sharedInstance().hasAuthInKeychain() {
-                GIDSignIn.sharedInstance().signInSilently();
+            if self.googleSignIn.hasAuthInKeychain() {
+                self.googleSignIn.signInSilently();
             } else {
-                GIDSignIn.sharedInstance().signIn();
+                self.googleSignIn.signIn();
             }
         }
     }
@@ -38,8 +43,8 @@ public class GoogleAuth: CAPPlugin {
     @objc
     func signOut(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
-            GIDSignIn.sharedInstance().signOut();
-        }   
+            self.googleSignIn.signOut();
+        }
         call.success();
     }
     
@@ -61,11 +66,11 @@ public class GoogleAuth: CAPPlugin {
         }
         
         let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String;
-        GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: [:]);
+        googleSignIn.handle(url, sourceApplication: sourceApplication, annotation: [:]);
     }
     
     func processCallback(user: GIDGoogleUser) {
-        pluginCall?.success([
+        signInCall?.success([
             "authentication": [
                 "accessToken": user.authentication.accessToken,
                 "idToken": user.authentication.idToken,
@@ -78,7 +83,7 @@ public class GoogleAuth: CAPPlugin {
 extension GoogleAuth: GIDSignInDelegate {
     public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
-            pluginCall?.error(error.localizedDescription);
+            signInCall?.error(error.localizedDescription);
             return;
         }
         
