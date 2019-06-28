@@ -20,6 +20,10 @@ public class GoogleAuth: CAPPlugin {
         googleSignIn.delegate = self;
         googleSignIn.uiDelegate = self;
         
+        if let serverClientId = getConfigValue("serverClientId") as? String {
+            googleSignIn.serverClientID = serverClientId;
+        }
+        
         if let scopes = getConfigValue("scopes") as? [String] {
             googleSignIn.scopes = scopes;
         }
@@ -75,7 +79,8 @@ public class GoogleAuth: CAPPlugin {
                 "accessToken": user.authentication.accessToken,
                 "idToken": user.authentication.idToken,
                 "refreshToken": user.authentication.refreshToken,
-            ]
+            ],
+            "serverAuthCode": user.serverAuthCode
         ]);
     }
 }

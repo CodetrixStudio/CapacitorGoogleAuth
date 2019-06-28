@@ -47,7 +47,8 @@ Provide configuration in root `capacitor.config.json`
 {
   "plugins": {
     "GoogleAuth": {
-      "scopes": ["profile", "email"]
+      "scopes": ["profile", "email"],
+      "serverClientId": "xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
     }
   }
 }
