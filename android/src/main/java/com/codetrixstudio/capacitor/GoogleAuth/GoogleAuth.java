@@ -78,6 +78,13 @@ public class GoogleAuth extends Plugin {
       JSObject user = new JSObject();
       user.put("serverAuthCode", account.getServerAuthCode());
       user.put("authentication", authentication);
+      
+      user.put("displayName", account.getDisplayName());
+      user.put("email", account.getEmail());
+      user.put("familyName", account.getFamilyName());
+      user.put("givenName", account.getGivenName());
+      user.put("id", account.getId());
+      user.put("imageUrl", account.getPhotoUrl());
 
       signInCall.success(user);
 

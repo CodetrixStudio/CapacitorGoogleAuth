@@ -80,7 +80,13 @@ public class GoogleAuth: CAPPlugin {
                 "idToken": user.authentication.idToken,
                 "refreshToken": user.authentication.refreshToken,
             ],
-            "serverAuthCode": user.serverAuthCode
+            "serverAuthCode": user.serverAuthCode,
+            "email": user.profile.email,
+            "familyName": user.profile.familyName,
+            "givenName": user.profile.givenName,
+            "id": user.userID,
+            "imageUrl": user.profile.imageURL(withDimension: 100),
+            "name": user.profile.name
         ]);
     }
 }
