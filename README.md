@@ -41,6 +41,21 @@ Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
 
 Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
 
+### Android
+Inside your `strings.xml`
+```xml
+<resources>
+  <string name="server_client_id">Your Web Client Key</string>
+</resources>
+```
+
+Register plugin inside your `MainActivity.onCreate`
+```java
+this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
+  add(GoogleAuth.class);
+}});
+```
+
 ### Configure
 Provide configuration in root `capacitor.config.json`
 ```json
@@ -54,10 +69,3 @@ Provide configuration in root `capacitor.config.json`
 }
 
 ```
-
-### Support
-✔️ iOS
-
-✔️ Web
-
-🔜 Android

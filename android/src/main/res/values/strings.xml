@@ -1,3 +1,3 @@
 <resources>
-    <string name="my_string">Just a simple string</string>
+    <string name="server_client_id">Your Web Client Key</string>
 </resources>
