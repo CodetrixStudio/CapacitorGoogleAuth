@@ -74,7 +74,7 @@ public class GoogleAuth: CAPPlugin {
     }
     
     func processCallback(user: GIDGoogleUser) {
-        signInCall?.success([
+        var userData: [String: Any] = [
             "authentication": [
                 "accessToken": user.authentication.accessToken,
                 "idToken": user.authentication.idToken,
@@ -85,9 +85,14 @@ public class GoogleAuth: CAPPlugin {
             "familyName": user.profile.familyName,
             "givenName": user.profile.givenName,
             "id": user.userID,
-            "imageUrl": user.profile.imageURL(withDimension: 100),
             "name": user.profile.name
-        ]);
+        ];
+        
+        if let imageUrl = user.profile.imageURL(withDimension: 100)?.absoluteString {
+            userData["imageUrl"] = imageUrl;
+        }
+        
+        signInCall?.success(userData);
     }
 }
 
