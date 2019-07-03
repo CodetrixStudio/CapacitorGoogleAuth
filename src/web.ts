@@ -39,40 +39,50 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   async signIn(): Promise<any> {
-    return new Promise(async (resolve) => {
-      const user: any = {};
-      const needsOfflineAccess = config.plugins.GoogleAuth.serverClientId != null;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user: any = {};
 
-      if (needsOfflineAccess) {
-        const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
-        user.serverAuthCode = offlineAccessResponse.code;
-      } else {
-        await gapi.auth2.getAuthInstance().signIn();
+        var needsOfflineAccess = false;
+        try {
+          needsOfflineAccess = config.plugins.GoogleAuth.serverClientId != null;
+        } catch {
+
+        }
+
+        if (needsOfflineAccess) {
+          const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
+          user.serverAuthCode = offlineAccessResponse.code;
+        } else {
+          await gapi.auth2.getAuthInstance().signIn();
+        }
+
+        const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+        if (needsOfflineAccess) {
+          // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
+          await googleUser.reloadAuthResponse();
+        }
+
+        const authResponse = googleUser.getAuthResponse(true);
+
+        const profile = googleUser.getBasicProfile();
+        user.email = profile.getEmail();
+        user.familyName = profile.getFamilyName();
+        user.givenName = profile.getGivenName();
+        user.id = profile.getId();
+        user.imageUrl = profile.getImageUrl();
+        user.name = profile.getName();
+
+        user.authentication = {
+          accessToken: authResponse.access_token,
+          idToken: authResponse.id_token
+        }
+
+        resolve(user);
+      } catch (error) {
+        reject(error);
       }
-
-      const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-
-      if (needsOfflineAccess) {
-        // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
-        await googleUser.reloadAuthResponse();
-      }
-
-      const authResponse = googleUser.getAuthResponse(true);
-
-      const profile = googleUser.getBasicProfile();
-      user.email = profile.getEmail();
-      user.familyName = profile.getFamilyName();
-      user.givenName = profile.getGivenName();
-      user.id = profile.getId();
-      user.imageUrl = profile.getImageUrl();
-      user.name = profile.getName();
-
-      user.authentication = {
-        accessToken: authResponse.access_token,
-        idToken: authResponse.id_token
-      }
-
-      resolve(user);
     });
   }
 
