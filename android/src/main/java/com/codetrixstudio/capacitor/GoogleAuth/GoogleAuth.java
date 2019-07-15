@@ -26,10 +26,19 @@ public class GoogleAuth extends Plugin {
 
   @Override
   public void load() {
-    String clientId = this.getContext().getString(R.string.server_client_id);
     GoogleSignInOptions.Builder googleSignInBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestIdToken(clientId)
       .requestEmail();
+
+    String clientId = "";
+    try {
+      clientId = (String) getConfigValue("serverClientId");
+    } catch (Exception ex) {}
+
+    if (!clientId.equals("")) {
+      googleSignInBuilder = googleSignInBuilder
+              .requestServerAuthCode(clientId)
+              .requestIdToken(clientId);
+    }
 
     try {
       JSONArray scopeArray = (JSONArray) getConfigValue("scopes");
