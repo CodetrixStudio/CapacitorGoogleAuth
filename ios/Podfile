@@ -6,7 +6,7 @@ target 'Plugin' do
   pod 'Capacitor', :path => '../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../node_modules/@capacitor/ios'
 
-  pod 'GoogleSignIn'
+  pod 'GoogleSignIn', '< 5'
   
 end
 
