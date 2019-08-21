@@ -29,6 +29,7 @@ public class GoogleAuth extends Plugin {
     String clientId = this.getContext().getString(R.string.server_client_id);
     GoogleSignInOptions.Builder googleSignInBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestIdToken(clientId)
+      .requestServerAuthCode(clientId)
       .requestEmail();
 
     try {
@@ -77,6 +78,7 @@ public class GoogleAuth extends Plugin {
 
       JSObject user = new JSObject();
       user.put("serverAuthCode", account.getServerAuthCode());
+      user.put("idToken", account.getIdToken());
       user.put("authentication", authentication);
       
       user.put("displayName", account.getDisplayName());
