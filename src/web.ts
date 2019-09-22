@@ -86,6 +86,37 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
+  async resignIn(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user: any = {};
+
+        const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+        await googleUser.reloadAuthResponse();
+
+        const authResponse = googleUser.getAuthResponse(true);
+
+        const profile = googleUser.getBasicProfile();
+        user.email = profile.getEmail();
+        user.familyName = profile.getFamilyName();
+        user.givenName = profile.getGivenName();
+        user.id = profile.getId();
+        user.imageUrl = profile.getImageUrl();
+        user.name = profile.getName();
+
+        user.authentication = {
+          accessToken: authResponse.access_token,
+          idToken: authResponse.id_token
+        }
+
+        resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   async signOut(): Promise<any> {
     return gapi.auth2.getAuthInstance().signOut();
   }
