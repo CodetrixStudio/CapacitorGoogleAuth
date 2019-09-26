@@ -1,8 +1,7 @@
-name: Node.js Package
+name: Node.js
 
 on:
-  release:
-    types: [published]
+  create
 
 jobs:
   build:
