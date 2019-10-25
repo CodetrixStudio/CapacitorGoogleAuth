@@ -19,9 +19,15 @@
     "@angular/platform-browser": "~8.2.11",
     "@angular/platform-browser-dynamic": "~8.2.11",
     "@angular/router": "~8.2.11",
+    "@capacitor/cli": "^1.3.0",
+    "@capacitor/core": "^1.3.0",
+    "@codetrix-studio/capacitor-google-auth": "file:..",
+    "@ng-bootstrap/schematics": "^2.0.0-alpha.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "@ng-bootstrap/ng-bootstrap": "^2.0.0-alpha.0",
+    "bootstrap": "^4.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.14",

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">demo</string>
+    <string name="title_activity_main">demo</string>
+    <string name="package_name">com.example.app</string>
+    <string name="custom_url_scheme">com.example.app</string>
+    <string name="server_client_id">744254868856-gud37co8eephv9slgpo6injpvtca59o7.apps.googleusercontent.com</string>
+</resources>

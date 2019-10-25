@@ -43,6 +43,30 @@ public class GoogleAuth: CAPPlugin {
             }
         }
     }
+    
+    @objc
+    func refresh(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            if self.googleSignIn.currentUser == nil {
+                call.error("User not logged in.");
+                return
+            }
+            
+            self.googleSignIn.currentUser.authentication.getTokensWithHandler { (authentication, error) in
+                guard let authentication = authentication else {
+                    call.error(error?.localizedDescription ?? "Something went wrong.");
+                    return;
+                }
+                
+                let authenticationData: [String: Any] = [
+                    "accessToken": authentication.accessToken,
+                    "idToken": authentication.idToken,
+                    "refreshToken": authentication.refreshToken
+                ]
+                call.success(authenticationData);
+            }
+        }
+    }
 
     @objc
     func signOut(_ call: CAPPluginCall) {
@@ -78,7 +102,7 @@ public class GoogleAuth: CAPPlugin {
             "authentication": [
                 "accessToken": user.authentication.accessToken,
                 "idToken": user.authentication.idToken,
-                "refreshToken": user.authentication.refreshToken,
+                "refreshToken": user.authentication.refreshToken
             ],
             "serverAuthCode": user.serverAuthCode,
             "email": user.profile.email,

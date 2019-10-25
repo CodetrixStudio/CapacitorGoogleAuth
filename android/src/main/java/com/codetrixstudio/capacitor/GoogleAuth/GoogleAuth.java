@@ -95,6 +95,10 @@ public class GoogleAuth extends Plugin {
     }
   }
 
+  @PluginMethod()
+  public void refresh(final PluginCall call) {
+    call.error("I don't know how to refresh token on Android");
+  }
 
   @PluginMethod()
   public void signOut(final PluginCall call) {
