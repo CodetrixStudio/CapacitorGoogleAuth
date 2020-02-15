@@ -10,7 +10,12 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       platforms: ['web']
     });
 
-    this.initialize();
+    if (this.webConfigured)
+      this.initialize();
+  }
+
+  get webConfigured(): boolean {
+    return document.getElementsByName('google-signin-client_id').length > 0;
   }
 
   initialize() {
