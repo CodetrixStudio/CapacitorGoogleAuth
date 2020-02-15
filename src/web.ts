@@ -1,21 +1,34 @@
 import { WebPlugin } from '@capacitor/core';
 import { GoogleAuthPlugin } from './definitions';
+import { User, Authentication } from './user';
+
 // @ts-ignore
 import config from '../../../../../capacitor.config.json';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
+
+  gapiLoaded: Promise<void>;
+
+  get webConfigured(): boolean {
+    return document.getElementsByName('google-signin-client_id').length > 0;
+  }
+
   constructor() {
     super({
       name: 'GoogleAuth',
       platforms: ['web']
     });
 
-    if (this.webConfigured)
-      this.initialize();
-  }
+    if (!this.webConfigured)
+      return;
 
-  get webConfigured(): boolean {
-    return document.getElementsByName('google-signin-client_id').length > 0;
+    this.gapiLoaded = new Promise(resolve => {
+      // HACK: Relying on window object, can't get property in gapi.load callback
+      (window as any).gapiResolve = resolve;
+      this.initialize();
+    });
+
+    this.addUserChangeListener();
   }
 
   initialize() {
@@ -30,7 +43,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   platformJsLoaded() {
-    gapi.load('auth2', async () => {
+    gapi.load('auth2', () => {
       const clientConfig: gapi.auth2.ClientConfig = {
         client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content
       };
@@ -40,15 +53,16 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       }
 
       gapi.auth2.init(clientConfig);
+      (window as any).gapiResolve();
     });
   }
 
   async signIn(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const user: any = {};
-
+        var serverAuthCode: string;
         var needsOfflineAccess = false;
+
         try {
           needsOfflineAccess = config.plugins.GoogleAuth.serverClientId != null;
         } catch {
@@ -57,7 +71,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
-          user.serverAuthCode = offlineAccessResponse.code;
+          serverAuthCode = offlineAccessResponse.code;
         } else {
           await gapi.auth2.getAuthInstance().signIn();
         }
@@ -69,21 +83,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
           await googleUser.reloadAuthResponse();
         }
 
-        const authResponse = googleUser.getAuthResponse(true);
-
-        const profile = googleUser.getBasicProfile();
-        user.email = profile.getEmail();
-        user.familyName = profile.getFamilyName();
-        user.givenName = profile.getGivenName();
-        user.id = profile.getId();
-        user.imageUrl = profile.getImageUrl();
-        user.name = profile.getName();
-
-        user.authentication = {
-          accessToken: authResponse.access_token,
-          idToken: authResponse.id_token
-        }
-
+        const user = this.getUserFrom(googleUser);
+        user.serverAuthCode = serverAuthCode;
         resolve(user);
       } catch (error) {
         reject(error);
@@ -91,7 +92,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
-  async refresh(): Promise<any> {
+  async refresh(): Promise<Authentication> {
     const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse()
     return {
       accessToken: authResponse.access_token,
@@ -101,6 +102,33 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
   async signOut(): Promise<any> {
     return gapi.auth2.getAuthInstance().signOut();
+  }
+
+  private async addUserChangeListener() {
+    await this.gapiLoaded;
+    gapi.auth2.getAuthInstance().currentUser.listen(googleUser => {
+      this.notifyListeners("userChange", googleUser.isSignedIn() ? this.getUserFrom(googleUser) : null);
+    });
+  }
+
+  private getUserFrom(googleUser: gapi.auth2.GoogleUser): User {
+    const user = {} as User;
+    const profile = googleUser.getBasicProfile();
+
+    user.email = profile.getEmail();
+    user.familyName = profile.getFamilyName();
+    user.givenName = profile.getGivenName();
+    user.id = profile.getId();
+    user.imageUrl = profile.getImageUrl();
+    user.name = profile.getName();
+
+    const authResponse = googleUser.getAuthResponse(true);
+    user.authentication = {
+      accessToken: authResponse.access_token,
+      idToken: authResponse.id_token
+    }
+
+    return user;
   }
 }
 

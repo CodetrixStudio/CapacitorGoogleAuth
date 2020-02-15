@@ -16,17 +16,21 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     SplashScreen.hide();
+
+    GoogleAuth.addListener('userChange', (googleUser) => {
+      console.log("userChange:", googleUser);
+    });
   }
 
   async signIn() {
     let googleUser = await GoogleAuth.signIn();
     this.username = googleUser.name;
-    console.log(googleUser);
+    console.log("signIn:", googleUser);
   }
 
   async refreshToken() {
     let response = await GoogleAuth.refresh();
-    console.log(response);
+    console.log("refresh:", response);
   }
 
   async signOut() {
