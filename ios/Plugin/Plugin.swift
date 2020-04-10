@@ -29,7 +29,7 @@ public class GoogleAuth: CAPPlugin {
             googleSignIn.scopes = scopes;
         }
 
-		if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? [Bool] {
+        if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? [Bool] {
             forceAuthCode = forceAuthCodeConfig;
         }
 		
