@@ -10,7 +10,8 @@ import GoogleSignIn
 public class GoogleAuth: CAPPlugin {
     var signInCall: CAPPluginCall?
     let googleSignIn: GIDSignIn = GIDSignIn.sharedInstance();
-
+	let forceAuthCode: Bool
+	
     public override func load() {
         guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {return}
         guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
@@ -28,6 +29,10 @@ public class GoogleAuth: CAPPlugin {
             googleSignIn.scopes = scopes;
         }
 
+		if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? [Bool] {
+            forceAuthCode = forceAuthCodeConfig;
+        }
+		
         NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
     }
 
@@ -36,7 +41,7 @@ public class GoogleAuth: CAPPlugin {
         signInCall = call;
 
         DispatchQueue.main.async {
-            if self.googleSignIn.hasPreviousSignIn() {
+            if self.googleSignIn.hasPreviousSignIn() && !forceAuthCode {
                 self.googleSignIn.restorePreviousSignIn();
             } else {
                 self.googleSignIn.signIn();
