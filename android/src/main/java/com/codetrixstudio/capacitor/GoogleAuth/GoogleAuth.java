@@ -1,6 +1,12 @@
 package com.codetrixstudio.capacitor.GoogleAuth;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.codetrixstudio.capacitor.GoogleAuth.capacitorgoogleauth.R;
 import com.getcapacitor.JSObject;
@@ -18,10 +24,26 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @NativePlugin(requestCodes = GoogleAuth.RC_SIGN_IN)
 public class GoogleAuth extends Plugin {
   static final int RC_SIGN_IN = 1337;
+
+  private final static String VERIFY_TOKEN_URL        = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
+  private final static String FIELD_TOKEN_EXPIRES_IN  = "expires_in";
+  private final static String FIELD_ACCESS_TOKEN      = "accessToken";
+  private final static String FIELD_TOKEN_EXPIRES     = "expires";
+  public static final int KAssumeStaleTokenSec = 60;
+
   private GoogleSignInClient googleSignInClient;
 
   @Override
@@ -73,33 +95,114 @@ public class GoogleAuth extends Plugin {
   }
 
   private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-    PluginCall signInCall = getSavedCall();
+    final PluginCall signInCall = getSavedCall();
 
     if (signInCall == null) return;
 
     try {
-      GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-      JSObject authentication = new JSObject();
-      authentication.put("idToken", account.getIdToken());
+      final GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-      JSObject user = new JSObject();
-      user.put("serverAuthCode", account.getServerAuthCode());
-      user.put("idToken", account.getIdToken());
-      user.put("authentication", authentication);
-      
-      user.put("displayName", account.getDisplayName());
-      user.put("email", account.getEmail());
-      user.put("familyName", account.getFamilyName());
-      user.put("givenName", account.getGivenName());
-      user.put("id", account.getId());
-      user.put("imageUrl", account.getPhotoUrl());
+      new AsyncTask<Void, Void, Void>() {
+        @Override
+        protected Void doInBackground(Void... params) {
+          
+          JSONObject result = new JSONObject();
+          try {
+            JSONObject accessTokenObject = getAuthToken(account.getAccount(), true);
 
-      signInCall.success(user);
+            JSObject authentication = new JSObject();
+            authentication.put("idToken", account.getIdToken());
+            authentication.put(FIELD_ACCESS_TOKEN, accessTokenObject.get(FIELD_ACCESS_TOKEN));
+            authentication.put(FIELD_TOKEN_EXPIRES, accessTokenObject.get(FIELD_TOKEN_EXPIRES));
+            authentication.put(FIELD_TOKEN_EXPIRES_IN, accessTokenObject.get(FIELD_TOKEN_EXPIRES_IN));
+
+            JSObject user = new JSObject();
+            user.put("serverAuthCode", account.getServerAuthCode());
+            user.put("idToken", account.getIdToken());
+            user.put("authentication", authentication);
+
+            user.put("displayName", account.getDisplayName());
+            user.put("email", account.getEmail());
+            user.put("familyName", account.getFamilyName());
+            user.put("givenName", account.getGivenName());
+            user.put("id", account.getId());
+            user.put("imageUrl", account.getPhotoUrl());
+
+            signInCall.success(user);
+          } catch (Exception e) {
+            e.printStackTrace();
+            signInCall.error("Something went wrong when retrieve access token", e);
+          }
+          return null;
+        }
+      }.execute();
 
     } catch (ApiException e) {
       signInCall.error("Something went wrong", e);
     }
+  }
+
+  private JSONObject getAuthToken(Account account, boolean retry) throws Exception {
+    AccountManager manager = AccountManager.get(getContext());
+    AccountManagerFuture<Bundle> future = manager.getAuthToken (account, "oauth2:profile email", null, false, null, null);
+    Bundle bundle = future.getResult();
+    String authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+    try {
+      return verifyToken(authToken);
+    } catch (IOException e) {
+      if (retry) {
+        manager.invalidateAuthToken("com.google", authToken);
+        return getAuthToken(account, false);
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  private JSONObject verifyToken(String authToken) throws IOException, JSONException {
+    URL url = new URL(VERIFY_TOKEN_URL+authToken);
+    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+    urlConnection.setInstanceFollowRedirects(true);
+    String stringResponse = fromStream(
+            new BufferedInputStream(urlConnection.getInputStream())
+    );
+        /* expecting:
+        {
+          "issued_to": "xxxxxx-xxxxxxxxxxxxxxx.apps.googleusercontent.com",
+          "audience": "xxxxxx-xxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+          "user_id": "xxxxxxxxxxxxxxxxxxxx",
+          "scope": "https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile",
+          "expires_in": 3220,
+          "email": "xxxxxxx@xxxxx.com",
+          "verified_email": true,
+          "access_type": "online"
+         }
+        */
+
+    Log.d("AuthenticatedBackend", "token: " + authToken + ", verification: " + stringResponse);
+    JSONObject jsonResponse = new JSONObject(
+            stringResponse
+    );
+    int expires_in = jsonResponse.getInt(FIELD_TOKEN_EXPIRES_IN);
+    if (expires_in < KAssumeStaleTokenSec) {
+      throw new IOException("Auth token soon expiring.");
+    }
+    jsonResponse.put(FIELD_ACCESS_TOKEN, authToken);
+    jsonResponse.put(FIELD_TOKEN_EXPIRES, expires_in + (System.currentTimeMillis()/1000));
+    return jsonResponse;
+  }
+
+  public static String fromStream(InputStream is) throws IOException {
+    BufferedReader reader = new BufferedReader(
+            new InputStreamReader(is));
+    StringBuilder sb = new StringBuilder();
+    String line = null;
+    while ((line = reader.readLine()) != null) {
+      sb.append(line).append("\n");
+    }
+    reader.close();
+    return sb.toString();
   }
 
   @PluginMethod()
