@@ -49,6 +49,11 @@ Inside your `strings.xml`
 </resources>
 ```
 
+Import package inside your `MainActivity`
+```java
+import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
+```
+
 Register plugin inside your `MainActivity.onCreate`
 ```java
 this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
