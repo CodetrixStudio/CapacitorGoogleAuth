@@ -42,12 +42,6 @@ Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
 Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
 
 ### Android
-Inside your `strings.xml`
-```xml
-<resources>
-  <string name="server_client_id">Your Web Client Key</string>
-</resources>
-```
 
 Import package inside your `MainActivity`
 ```java

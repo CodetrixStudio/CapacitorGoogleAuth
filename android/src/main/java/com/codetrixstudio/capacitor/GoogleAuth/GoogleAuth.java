@@ -26,7 +26,7 @@ public class GoogleAuth extends Plugin {
 
   @Override
   public void load() {
-    String clientId = this.getContext().getString(R.string.server_client_id);
+    String clientId = (String) getConfigValue("serverClientId");
     boolean forceCodeForRefreshToken = false;
 
     Boolean forceRefreshToken = (Boolean) getConfigValue("forceCodeForRefreshToken");
@@ -60,9 +60,15 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void signIn(PluginCall call) {
-    saveCall(call);
-    Intent signInIntent = googleSignInClient.getSignInIntent();
-    startActivityForResult(call, signInIntent, RC_SIGN_IN);
+    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
+    if (null == account) {
+      saveCall(call);
+      Intent signInIntent = googleSignInClient.getSignInIntent();
+      startActivityForResult(call, signInIntent, RC_SIGN_IN);
+    } else {
+      JSObject user = this.accountToJSObject(account);
+      call.success(user);
+    }
   }
 
   @Override
@@ -82,25 +88,10 @@ public class GoogleAuth extends Plugin {
 
     try {
       GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-      JSObject authentication = new JSObject();
-      authentication.put("idToken", account.getIdToken());
-
-      JSObject user = new JSObject();
-      user.put("serverAuthCode", account.getServerAuthCode());
-      user.put("idToken", account.getIdToken());
-      user.put("authentication", authentication);
-      
-      user.put("displayName", account.getDisplayName());
-      user.put("email", account.getEmail());
-      user.put("familyName", account.getFamilyName());
-      user.put("givenName", account.getGivenName());
-      user.put("id", account.getId());
-      user.put("imageUrl", account.getPhotoUrl());
-
+      JSObject user = this.accountToJSObject(account);
       signInCall.success(user);
-
-    } catch (ApiException e) {
+    }
+    catch (ApiException e) {
       signInCall.error("Something went wrong", e);
     }
   }
@@ -115,4 +106,24 @@ public class GoogleAuth extends Plugin {
     googleSignInClient.signOut();
     call.success();
   }
+
+  public JSObject accountToJSObject(GoogleSignInAccount account) {
+    JSObject authentication = new JSObject();
+    authentication.put("idToken", account.getIdToken());
+
+    JSObject user = new JSObject();
+    user.put("serverAuthCode", account.getServerAuthCode());
+    user.put("idToken", account.getIdToken());
+    user.put("authentication", authentication);
+
+    user.put("displayName", account.getDisplayName());
+    user.put("email", account.getEmail());
+    user.put("familyName", account.getFamilyName());
+    user.put("givenName", account.getGivenName());
+    user.put("id", account.getId());
+    user.put("imageUrl", account.getPhotoUrl());
+
+    return  user;
+  }
 }
+
