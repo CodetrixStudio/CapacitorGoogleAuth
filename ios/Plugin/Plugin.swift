@@ -11,14 +11,14 @@ public class GoogleAuth: CAPPlugin {
     var signInCall: CAPPluginCall?
     let googleSignIn: GIDSignIn = GIDSignIn.sharedInstance();
     var forceAuthCode: Bool = false;
-    
+
     public override func load() {
         guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {return}
         guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
         guard let clientId = dict["CLIENT_ID"] as? String else {return}
         googleSignIn.clientID = clientId;
         googleSignIn.delegate = self;
-        googleSignIn.presentingViewController = bridge.viewController;
+        googleSignIn.presentingViewController = bridge?.viewController;
         if let serverClientId = getConfigValue("serverClientId") as? String {
             googleSignIn.serverClientID = serverClientId;
         }
@@ -30,7 +30,7 @@ public class GoogleAuth: CAPPlugin {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
     }
-    
+
     @objc
     func signIn(_ call: CAPPluginCall) {
         signInCall = call;
@@ -42,7 +42,7 @@ public class GoogleAuth: CAPPlugin {
             }
         }
     }
-    
+
     @objc
     func refresh(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
@@ -64,7 +64,7 @@ public class GoogleAuth: CAPPlugin {
             }
         }
     }
-    
+
     @objc
     func signOut(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
@@ -72,7 +72,7 @@ public class GoogleAuth: CAPPlugin {
         }
         call.success();
     }
-    
+
     @objc
     func handleOpenUrl(_ notification: Notification) {
         guard let object = notification.object as? [String: Any] else {
@@ -85,7 +85,7 @@ public class GoogleAuth: CAPPlugin {
         }
         googleSignIn.handle(url);
     }
-    
+
     func processCallback(user: GIDGoogleUser) {
         var userData: [String: Any] = [
             "authentication": [
