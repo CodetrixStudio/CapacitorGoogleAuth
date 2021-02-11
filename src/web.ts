@@ -1,4 +1,4 @@
-import { WebPlugin } from '@capacitor/core';
+import { registerPlugin, WebPlugin } from '@capacitor/core';
 import { GoogleAuthPlugin } from './definitions';
 import { User, Authentication } from './user';
 
@@ -136,5 +136,4 @@ const GoogleAuth = new GoogleAuthWeb();
 
 export { GoogleAuth };
 
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(GoogleAuth);
+registerPlugin('GoogleAuth', { web: GoogleAuth });
