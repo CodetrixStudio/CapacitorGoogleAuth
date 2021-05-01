@@ -10,7 +10,11 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
 
   get webConfigured(): boolean {
-    return document.getElementsByName('google-signin-client_id').length > 0;
+    if (typeof document !== 'undefined') {
+      return document.getElementsByName('google-signin-client_id').length > 0;
+    } else {
+      return false;
+    }
   }
 
   constructor() {
