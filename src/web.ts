@@ -18,10 +18,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   constructor() {
-    super({
-      name: 'GoogleAuth',
-      platforms: ['web']
-    });
+    super();
   }
 
   loadScript() {
