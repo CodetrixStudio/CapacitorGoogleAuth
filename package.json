@@ -17,7 +17,7 @@
     "@capacitor/core": "^3.0.0"
   },
   "devDependencies": {
-    "@capacitor/android": "3.0.0",
+    "@capacitor/android": "^3.0.0",
     "@capacitor/ios": "^3.0.0",
     "@types/gapi": "0.0.39",
     "@types/gapi.auth2": "0.0.54",
