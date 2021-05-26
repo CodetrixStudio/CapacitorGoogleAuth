@@ -1,4 +1,4 @@
-import { registerPlugin, WebPlugin } from '@capacitor/core';
+import { WebPlugin } from '@capacitor/core';
 import { GoogleAuthPlugin } from './definitions';
 import { User, Authentication } from './user';
 
@@ -135,8 +135,3 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return user;
   }
 }
-
-const GoogleAuth = registerPlugin('GoogleAuth', { web: new GoogleAuthWeb() });
-
-export { GoogleAuth };
-
