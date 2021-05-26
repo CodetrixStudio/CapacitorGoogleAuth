@@ -14,14 +14,14 @@
   "author": "CodetrixStudio",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "^3.0.0-beta.2"
+    "@capacitor/core": "^3.0.0"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.0.0-beta.2",
-    "@capacitor/ios": "^3.0.0-beta.2",
-    "@types/gapi": "0.0.36",
-    "@types/gapi.auth2": "0.0.50",
-    "typescript": "^3.2.4"
+    "@capacitor/android": "^3.0.0",
+    "@capacitor/ios": "^3.0.0",
+    "@types/gapi": "0.0.39",
+    "@types/gapi.auth2": "0.0.54",
+    "typescript": "^4.2.4"
   },
   "files": [
     "dist/",
