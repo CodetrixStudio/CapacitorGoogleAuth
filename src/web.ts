@@ -22,17 +22,6 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       name: 'GoogleAuth',
       platforms: ['web']
     });
-
-    if (!this.webConfigured)
-      return;
-
-    this.gapiLoaded = new Promise(resolve => {
-      // HACK: Relying on window object, can't get property in gapi.load callback
-      (window as any).gapiResolve = resolve;
-      this.initialize();
-    });
-
-    this.addUserChangeListener();
   }
 
   initialize() {
@@ -44,6 +33,19 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     script.onload = this.platformJsLoaded;
     script.src = 'https://apis.google.com/js/platform.js';
     head.appendChild(script);
+  }
+
+  init(){
+    if (!this.webConfigured)
+      return;
+
+    this.gapiLoaded = new Promise(resolve => {
+      // HACK: Relying on window object, can't get property in gapi.load callback
+      (window as any).gapiResolve = resolve;
+      this.initialize();
+    });
+
+    this.addUserChangeListener();
   }
 
   platformJsLoaded() {
