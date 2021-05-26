@@ -1,9 +1,8 @@
 import { registerPlugin } from '@capacitor/core';
-import { GoogleAuthWeb } from './web';
 import type { GoogleAuthPlugin } from './definitions';
 
 const GoogleAuth = registerPlugin<GoogleAuthPlugin>('GoogleAuth', {
-  web: new GoogleAuthWeb(),
+  web: () => import('./web').then(m => new m.GoogleAuthWeb()),
 });
 
 export * from './definitions';
