@@ -1,12 +1,25 @@
 # CapacitorGoogleAuth
 Capacitor plugin for Google Auth.
 
-### Install
+## Install
+
+#### 1. Install package
 ```bash
 npm i --save @codetrix-studio/capacitor-google-auth
 
+# or for Capacitor 2.x.x
+npm i --save @codetrix-studio/capacitor-google-auth@2.1.3
+```
+
+#### 2. Update capacitor deps
+```sh
 npx cap update
 ```
+#### 3. Migrate from 2 to 3 version
+if your migrate from Capacitor 2 to Capacitor 3 [see instruction for migrate plugin to new version](#migrate-from-2-to-3)
+
+## Usage
+for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/CapacitorGoogleAuth/blob/79129ab37288f5f5d0bb9a568a95890e852cebc2/README.md)
 
 ### WEB
 Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#specify_your_apps_client_id) meta tag to head.
@@ -84,7 +97,7 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 }});
 ```
 
-### Configure
+## Configure
 Provide configuration in root `capacitor.config.json`
 ```json
 {
@@ -100,3 +113,21 @@ Provide configuration in root `capacitor.config.json`
 ```
 
 Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
+
+
+### Migration guide
+
+#### Migrate from 2 to 3
+
+After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
+
+##### WEB
+```diff
+- import "@codetrix-studio/capacitor-google-auth";
+- import { Plugins } from '@capacitor/core';
++ import { GoogleAuth } from '@codetrix-studio/core';
+
+- Plugins.GoogleAuth.signIn();
++ GoogleAuth.init()
++ GoogleAuth.signIn()
+```
