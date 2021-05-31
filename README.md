@@ -14,26 +14,49 @@ Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#spec
 <meta name="google-signin-client_id" content="{your client id here}">
 ```
 
-Register the plugin by importing it.
+Register plugin and manually initialize
 ```ts
-import "@codetrix-studio/capacitor-google-auth";
+import { GoogleAuth } from '@codetrix-studio/core';
+
+GoogleAuth.init()
 ```
 
 Use it
 ```ts
-import { Plugins } from '@capacitor/core';
-Plugins.GoogleAuth.signIn();
+GoogleAuth.signIn()
 ```
 
-
-
-### AngularFire2
+#### AngularFire2
 ```ts
 async googleSignIn() {
   let googleUser = await Plugins.GoogleAuth.signIn();
   const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
   return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
 }
+```
+
+#### Vue 3
+```ts
+// App.vue
+import { defineComponent, onMounted } from 'vue'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+
+export default defineComponent({
+  setup() {
+    onMounted(() => {
+      GoogleAuth.init()
+    })
+    
+    const logIn = async () => {
+      const response = await GoogleAuth.signIn()
+      console.log(response)
+    }
+    
+    return {
+      logIn
+    }
+  }
+})
 ```
 
 ### iOS
