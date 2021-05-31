@@ -117,7 +117,7 @@ Note : `forceCodeForRefreshToken` force user to select email address to regenera
 
 ### Migration guide
 
-#### [Migrate from 2 to 3](#migrate-from-2-to-3)
+#### Migrate from 2 to 3
 
 After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
 
