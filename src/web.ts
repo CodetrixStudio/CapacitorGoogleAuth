@@ -1,4 +1,4 @@
-import { registerPlugin, WebPlugin } from '@capacitor/core';
+import { WebPlugin } from '@capacitor/core';
 import { GoogleAuthPlugin } from './definitions';
 import { User, Authentication } from './user';
 
@@ -18,24 +18,10 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   constructor() {
-    super({
-      name: 'GoogleAuth',
-      platforms: ['web']
-    });
-
-    if (!this.webConfigured)
-      return;
-
-    this.gapiLoaded = new Promise(resolve => {
-      // HACK: Relying on window object, can't get property in gapi.load callback
-      (window as any).gapiResolve = resolve;
-      this.initialize();
-    });
-
-    this.addUserChangeListener();
+    super();
   }
 
-  initialize() {
+  loadScript() {
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -44,6 +30,19 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     script.onload = this.platformJsLoaded;
     script.src = 'https://apis.google.com/js/platform.js';
     head.appendChild(script);
+  }
+
+  init(){
+    if (!this.webConfigured)
+      return;
+
+    this.gapiLoaded = new Promise(resolve => {
+      // HACK: Relying on window object, can't get property in gapi.load callback
+      (window as any).gapiResolve = resolve;
+      this.loadScript();
+    });
+
+    this.addUserChangeListener();
   }
 
   platformJsLoaded() {
@@ -135,8 +134,3 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return user;
   }
 }
-
-const GoogleAuth = registerPlugin('GoogleAuth', { web: new GoogleAuthWeb() });
-
-export { GoogleAuth };
-
