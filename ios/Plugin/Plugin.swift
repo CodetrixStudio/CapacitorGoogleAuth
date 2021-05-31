@@ -13,7 +13,10 @@ public class GoogleAuth: CAPPlugin {
     var forceAuthCode: Bool = false;
 
     public override func load() {
-        guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {return}
+        guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {
+            print("GoogleService-Info.plist not found");
+            return;
+        }
         guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
         guard let clientId = dict["CLIENT_ID"] as? String else {return}
         googleSignIn.clientID = clientId;
