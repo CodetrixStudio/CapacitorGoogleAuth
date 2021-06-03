@@ -29,7 +29,7 @@ Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#spec
 
 Register plugin and manually initialize
 ```ts
-import { GoogleAuth } from '@codetrix-studio/core';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 GoogleAuth.init()
 ```
@@ -125,7 +125,7 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 ```diff
 - import "@codetrix-studio/capacitor-google-auth";
 - import { Plugins } from '@capacitor/core';
-+ import { GoogleAuth } from '@codetrix-studio/core';
++ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 - Plugins.GoogleAuth.signIn();
 + GoogleAuth.init()
