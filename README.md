@@ -31,8 +31,10 @@ Register plugin and manually initialize
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
+// use hook after platform dom ready
 GoogleAuth.init()
 ```
+
 
 Use it
 ```ts
