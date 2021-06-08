@@ -128,7 +128,7 @@ Provide configuration in root `capacitor.config.json`
 Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
 
 
-### Migration guide
+## Migration guide
 
 #### Migrate from 2 to 3
 
