@@ -42,6 +42,17 @@ GoogleAuth.signIn()
 ```
 
 #### AngularFire2
+
+init hook
+```ts
+initializeApp() {
+  this.platform.ready().then(() => {
+    GoogleAuth.init();
+  });
+}
+```
+
+sign in function 
 ```ts
 async googleSignIn() {
   let googleUser = await Plugins.GoogleAuth.signIn();
