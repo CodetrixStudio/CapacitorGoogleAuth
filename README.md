@@ -45,10 +45,15 @@ GoogleAuth.signIn()
 
 init hook
 ```ts
+// app.component.ts   
+constructor() {
+  this.initializeApp();
+}
+
 initializeApp() {
   this.platform.ready().then(() => {
-    GoogleAuth.init();
-  });
+    GoogleAuth.init()
+  })
 }
 ```
 
@@ -138,7 +143,7 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 ```diff
 - import "@codetrix-studio/capacitor-google-auth";
 - import { Plugins } from '@capacitor/core';
-+ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
++ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 - Plugins.GoogleAuth.signIn();
 + GoogleAuth.init()
