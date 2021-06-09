@@ -23,6 +23,9 @@
     "@types/gapi.auth2": "0.0.54",
     "typescript": "^4.2.4"
   },
+  "peerDependencies": {
+    "@capacitor/core": "^3"
+  },
   "files": [
     "dist/",
     "ios/",
