@@ -31,8 +31,12 @@ Register plugin and manually initialize
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
-GoogleAuth.init()
+GoogleAuth.init({
+  scopes: ["profile", "email"],
+  offline: true
+})
 ```
+> see `init` method options - descriptions, examples, default values and types in `definition.ts`
 
 Use it
 ```ts
@@ -109,6 +113,25 @@ Provide configuration in root `capacitor.config.json`
     }
   }
 }
+
+```
+
+or in `capacitor.config.ts`
+
+```ts
+/// <reference types="'@codetrix-studio/capacitor-google-auth'" />
+
+const config: CapacitorConfig = {
+  plugins: {
+    GoogleAuth: {
+      scopes: ["profile", "email"],
+      serverClientId: "xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+      forceCodeForRefreshToken : true
+    }
+  },
+};
+
+export default config;
 
 ```
 
