@@ -1,13 +1,14 @@
 import { WebPlugin } from '@capacitor/core';
-import { GoogleAuthPlugin } from './definitions';
+import { GoogleAuthPlugin, GoogleAuthPluginOptionsWeb } from './definitions';
 import { User, Authentication } from './user';
-
-// @ts-ignore
-import config from '../../../../../capacitor.config.json';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
   gapiLoaded: Promise<void>;
+  options: GoogleAuthPluginOptionsWeb = {
+    offline: false,
+    scopes: []
+  }
 
   get webConfigured(): boolean {
     if (typeof document !== 'undefined') {
@@ -32,9 +33,14 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     head.appendChild(script);
   }
 
-  init(){
-    if (!this.webConfigured)
-      return;
+  init(_options?: Partial<GoogleAuthPluginOptionsWeb>){
+    if (!this.webConfigured) {
+      return
+    }
+
+    if(_options) {
+      this.options = {..._options, ...this.options}
+    }
 
     this.gapiLoaded = new Promise(resolve => {
       // HACK: Relying on window object, can't get property in gapi.load callback
@@ -51,8 +57,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
         client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content
       };
 
-      if (config.plugins.GoogleAuth != null && config.plugins.GoogleAuth.scopes != null) {
-        clientConfig.scope = config.plugins.GoogleAuth.scopes.join(' ');
+      if (this.options.scopes.length) {
+        clientConfig.scope = this.options.scopes.join(' ');
       }
 
       gapi.auth2.init(clientConfig);
@@ -67,7 +73,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
         var needsOfflineAccess = false;
 
         try {
-          needsOfflineAccess = config.plugins.GoogleAuth.serverClientId != null;
+          needsOfflineAccess = this.options.offline
         } catch {
 
         }
