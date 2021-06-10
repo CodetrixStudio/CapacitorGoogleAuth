@@ -2,9 +2,10 @@
 /// <reference types="@capacitor/cli" />
 import { Authentication, User } from "./user";
 
-
 declare module '@capacitor/cli' {
-  export interface PluginsConfig extends GoogleAuthPluginOptions {}
+  export interface PluginsConfig {
+    GoogleAuth: GoogleAuthPluginOptions
+  }
 }
 
 export interface GoogleAuthPluginOptions {
