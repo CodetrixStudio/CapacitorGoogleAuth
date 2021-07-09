@@ -1,12 +1,14 @@
 package com.codetrixstudio.capacitor.GoogleAuth;
 
 import android.content.Intent;
+import androidx.activity.result.ActivityResult;
 
 import com.codetrixstudio.capacitor.GoogleAuth.capacitorgoogleauth.R;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.ActivityCallback;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -21,7 +23,6 @@ import org.json.JSONException;
 
 @CapacitorPlugin()
 public class GoogleAuth extends Plugin {
-  static final int RC_SIGN_IN = 1337;
   private GoogleSignInClient googleSignInClient;
 
   @Override
@@ -62,23 +63,14 @@ public class GoogleAuth extends Plugin {
   public void signIn(PluginCall call) {
     saveCall(call);
     Intent signInIntent = googleSignInClient.getSignInIntent();
-    startActivityForResult(call, signInIntent, RC_SIGN_IN);
+    startActivityForResult(call, signInIntent, "signInResult");
   }
 
-  @Override
-  protected void handleOnActivityResult(int requestCode, int resultCode, Intent data) {
-    super.handleOnActivityResult(requestCode, resultCode, data);
+  @ActivityCallback
+  protected void signInResult(PluginCall call, ActivityResult result) {
+    if (call == null) return;
 
-    if (requestCode == RC_SIGN_IN) {
-      Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-      handleSignInResult(task);
-    }
-  }
-
-  private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-    PluginCall signInCall = getSavedCall();
-
-    if (signInCall == null) return;
+    Task<GoogleSignInAccount> completedTask = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
 
     try {
       GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -90,7 +82,7 @@ public class GoogleAuth extends Plugin {
       user.put("serverAuthCode", account.getServerAuthCode());
       user.put("idToken", account.getIdToken());
       user.put("authentication", authentication);
-      
+
       user.put("displayName", account.getDisplayName());
       user.put("email", account.getEmail());
       user.put("familyName", account.getFamilyName());
@@ -98,10 +90,9 @@ public class GoogleAuth extends Plugin {
       user.put("id", account.getId());
       user.put("imageUrl", account.getPhotoUrl());
 
-      signInCall.resolve(user);
-
+      call.resolve(user);
     } catch (ApiException e) {
-      signInCall.reject("Something went wrong", e);
+      call.reject("Something went wrong", e);
     }
   }
 
