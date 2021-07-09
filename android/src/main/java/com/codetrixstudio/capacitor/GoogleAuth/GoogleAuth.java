@@ -98,21 +98,21 @@ public class GoogleAuth extends Plugin {
       user.put("id", account.getId());
       user.put("imageUrl", account.getPhotoUrl());
 
-      signInCall.success(user);
+      signInCall.resolve(user);
 
     } catch (ApiException e) {
-      signInCall.error("Something went wrong", e);
+      signInCall.reject("Something went wrong", e);
     }
   }
 
   @PluginMethod()
   public void refresh(final PluginCall call) {
-    call.error("I don't know how to refresh token on Android");
+    call.reject("I don't know how to refresh token on Android");
   }
 
   @PluginMethod()
   public void signOut(final PluginCall call) {
     googleSignInClient.signOut();
-    call.success();
+    call.resolve();
   }
 }
