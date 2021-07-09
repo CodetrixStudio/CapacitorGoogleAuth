@@ -4,10 +4,10 @@ import android.content.Intent;
 
 import com.codetrixstudio.capacitor.GoogleAuth.capacitorgoogleauth.R;
 import com.getcapacitor.JSObject;
-import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.CapacitorPlugin;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-@NativePlugin(requestCodes = GoogleAuth.RC_SIGN_IN)
+@CapacitorPlugin()
 public class GoogleAuth extends Plugin {
   static final int RC_SIGN_IN = 1337;
   private GoogleSignInClient googleSignInClient;
