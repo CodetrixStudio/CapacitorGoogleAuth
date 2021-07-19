@@ -1,6 +1,17 @@
 # CapacitorGoogleAuth
 Capacitor plugin for Google Auth.
 
+## Contributions
+PRs are welcome and much appreciated that keeps this plugin up to date with Capacitor and official Google Auth platform library feature parity.
+
+Try to follow good code practices.
+
+PRs for features that are not aligned with the official Google Auth library are discouraged.
+
+(We are beginner-friendly here)
+
+
+
 ## Install
 
 #### 1. Install package
