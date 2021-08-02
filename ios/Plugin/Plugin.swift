@@ -16,7 +16,10 @@ public class GoogleAuth: CAPPlugin {
         googleSignIn.delegate = self;
         googleSignIn.presentingViewController = bridge?.viewController;
         
-        if let clientId = getConfigValue("clientId") as? String {
+        if let clientId = getConfigValue("iosClientId") as? String {
+            googleSignIn.clientID = clientId;
+        }
+        else if let clientId = getConfigValue("clientId") as? String {
             googleSignIn.clientID = clientId;
         }
         else if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
