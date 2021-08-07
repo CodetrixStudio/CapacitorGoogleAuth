@@ -70,13 +70,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return new Promise(async (resolve, reject) => {
       try {
         var serverAuthCode: string;
-        var needsOfflineAccess = false;
-
-        try {
-          needsOfflineAccess = this.options.offline
-        } catch {
-
-        }
+        var needsOfflineAccess = this.options?.offline ?? false
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
