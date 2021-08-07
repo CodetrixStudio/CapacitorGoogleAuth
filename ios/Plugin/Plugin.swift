@@ -2,6 +2,14 @@ import Foundation
 import Capacitor
 import GoogleSignIn
 
+public struct initConfig {
+    var clientID: String?
+    var serverClientID: String?
+    var forceAuthCode: Bool?
+    var scopes: [String]?
+    var viewController: UIViewController = nil
+}
+
 /**
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitor.ionicframework.com/docs/plugins/ios
@@ -9,8 +17,12 @@ import GoogleSignIn
 @objc(GoogleAuth)
 public class GoogleAuth: CAPPlugin {
     var signInCall: CAPPluginCall?
-    let googleSignIn: GIDSignIn = GIDSignIn.sharedInstance();
+    let googleSignIn = GIDSignIn.sharedInstance;
     var forceAuthCode: Bool = false;
+    
+    var signInConfig: GIDConfiguration
+    var config = initConfig()
+    
 
     public override func load() {
         guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {
@@ -18,20 +30,37 @@ public class GoogleAuth: CAPPlugin {
             return;
         }
         guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
+        
         guard let clientId = dict["CLIENT_ID"] as? String else {return}
-        googleSignIn.clientID = clientId;
-        googleSignIn.delegate = self;
-        googleSignIn.presentingViewController = bridge?.viewController;
+        
+        config.clientID = clientId
+        
         if let serverClientId = getConfigValue("serverClientId") as? String {
-            googleSignIn.serverClientID = serverClientId;
+            config.serverClientID = serverClientId;
         }
-        if let scopes = getConfigValue("scopes") as? [String] {
-            googleSignIn.scopes = scopes;
-        }
+        
         if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? Bool {
-            forceAuthCode = forceAuthCodeConfig;
+            config.forceAuthCode = forceAuthCodeConfig;
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
+        
+        if let scopes = getConfigValue("scopes") as? [String] {
+            config.scopes = scopes;
+        }
+        
+        if let viewController = bridge?.viewController {
+            config.viewController = viewController
+        }
+     
+        
+        signInConfig = GIDConfiguration.init(
+            clientID: clientId,
+            serverClientID: config.serverClientID
+            // TODO: scopes: config.scopes https://github.com/google/GoogleSignIn-iOS/pull/30
+        )
+        
+        // googleSignIn.delegate = self;
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name.capacitorOpenURL, object: nil);
     }
 
     @objc
@@ -41,7 +70,9 @@ public class GoogleAuth: CAPPlugin {
             if self.googleSignIn.hasPreviousSignIn() && !self.forceAuthCode {
                 self.googleSignIn.restorePreviousSignIn();
             } else {
-                self.googleSignIn.signIn();
+                self.googleSignIn.signIn(
+                    with: self.signInConfig,
+                    presenting: self.config.viewController);
             }
         }
     }
