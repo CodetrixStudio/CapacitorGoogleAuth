@@ -18,10 +18,9 @@ public class GoogleAuth: CAPPlugin {
     public override func load() {
         googleSignIn = GIDSignIn.sharedInstance;
         
-        let clientId = getClientIdValue();
         let serverClientId = getServerClientIdValue();
         
-        guard let clientId = clientId else {
+        guard let clientId = getClientIdValue() else {
             NSLog("no client id found in config")
             return;
         }
