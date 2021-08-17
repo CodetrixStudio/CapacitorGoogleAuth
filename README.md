@@ -121,11 +121,11 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 
 ## Configure
 
-| Name                     | Type     | Default | Example                                              | Description                                                                                                                   |
-| ------------------------ | -------- | ------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| scopes                   | string[] | []      | ["profile", "email"]                                 | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
-| serverClientId           | string   | ''      | xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com | This is used for offline access and serverside handling                                                                       |
-| forceCodeForRefreshToken | boolean  | false   | false                                                | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
+| Name                     | Type     | Default | Description                                                                                                                                                  |
+| ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes<br>e.g. `["profile", "email"]` |
+| serverClientId           | string   | ''      | This is used for offline access and serverside handling<br>e.g. `xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com`                                       |
+| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)                                     |
 
 Provide configuration in root `capacitor.config.json`
 
