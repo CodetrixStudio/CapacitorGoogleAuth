@@ -29,24 +29,27 @@ for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/Capacito
 
 ### WEB
 
-Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#specify_your_apps_client_id) meta tag to head.
-
-```html
-<meta name="google-signin-client_id" content="{your client id here}" />
-```
-
 Register plugin and manually initialize
 
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 GoogleAuth.init({
+  client_id: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
-  offline: true,
+  offlineAccess: true,
 })
 ```
 
-> see `init` method options - descriptions, examples, default values and types in `definition.ts`
+or if need use meta tags
+```html
+<meta name="google-signin-client_id" content="{your client id here}" />
+<meta name="google-signin-scope" content="profile email">
+```
+#### Options
+
+- `scopes` – same as [Configure](#Configure) scopes
+- `offlineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser. 
 
 Use it
 
@@ -121,11 +124,11 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 
 ## Configure
 
-| Name                     | Type     | Default | Description                                                                                                                                                  |
-| ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes<br>e.g. `["profile", "email"]` |
-| serverClientId           | string   | ''      | This is used for offline access and serverside handling<br>e.g. `xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com`                                       |
-| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)                                     |
+| Name                     | Type     | Default | Description                                                                                                                   |
+| ------------------------ | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
+| serverClientId           | string   | ''      | This ClientId used for offline access and serverside handling                                                                 |
+| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
 
 Provide configuration in root `capacitor.config.json`
 
@@ -158,8 +161,6 @@ const config: CapacitorConfig = {
 
 export default config
 ```
-
-Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
 
 ### Migration guide
 
