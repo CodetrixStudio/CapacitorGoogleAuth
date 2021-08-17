@@ -2,6 +2,17 @@
 
 Capacitor plugin for Google Auth.
 
+## Contributions
+PRs are welcome and much appreciated that keeps this plugin up to date with Capacitor and official Google Auth platform library feature parity.
+
+Try to follow good code practices. You can even help keeping the included demo updated.
+
+PRs for features that are not aligned with the official Google Auth library are discouraged.
+
+(We are beginner-friendly here)
+
+
+
 ## Install
 
 #### 1. Install package
@@ -34,6 +45,7 @@ Register plugin and manually initialize
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
+// use hook after platform dom ready
 GoogleAuth.init({
   client_id: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
@@ -50,7 +62,7 @@ or if need use meta tags
 
 #### Options
 
-- ``
+- `client_id` - 
 - `scopes` – same as [Configure](#Configure) scopes
 - `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser.
 
@@ -62,9 +74,24 @@ GoogleAuth.signIn();
 
 #### AngularFire2
 
+init hook
+```ts
+// app.component.ts   
+constructor() {
+  this.initializeApp();
+}
+
+initializeApp() {
+  this.platform.ready().then(() => {
+    GoogleAuth.init()
+  })
+}
+```
+
+sign in function 
 ```ts
 async googleSignIn() {
-  let googleUser = await Plugins.GoogleAuth.signIn();
+  let googleUser = await GoogleAuth.signIn();
   const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
   return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
 }
@@ -165,7 +192,7 @@ const config: CapacitorConfig = {
 export default config;
 ```
 
-### Migration guide
+## Migration guide
 
 #### Migrate from 2 to 3
 
@@ -176,7 +203,7 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 ```diff
 - import "@codetrix-studio/capacitor-google-auth";
 - import { Plugins } from '@capacitor/core';
-+ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
++ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 - Plugins.GoogleAuth.signIn();
 + GoogleAuth.init()

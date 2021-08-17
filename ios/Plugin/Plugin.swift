@@ -35,6 +35,11 @@ public class GoogleAuth: CAPPlugin {
     }
 
     @objc
+    func init(_ call: CAPPluginCall) {
+        call.unimplemented("Not available on iOS")
+    }
+
+    @objc
     func signIn(_ call: CAPPluginCall) {
         signInCall = call;
         DispatchQueue.main.async {
@@ -50,12 +55,12 @@ public class GoogleAuth: CAPPlugin {
     func refresh(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
             if self.googleSignIn.currentUser == nil {
-                call.error("User not logged in.");
+                call.reject("User not logged in.");
                 return
             }
             self.googleSignIn.currentUser.authentication.getTokensWithHandler { (authentication, error) in
                 guard let authentication = authentication else {
-                    call.error(error?.localizedDescription ?? "Something went wrong.");
+                    call.reject(error?.localizedDescription ?? "Something went wrong.");
                     return;
                 }
                 let authenticationData: [String: Any] = [
@@ -63,7 +68,7 @@ public class GoogleAuth: CAPPlugin {
                     "idToken": authentication.idToken,
                     "refreshToken": authentication.refreshToken
                 ]
-                call.success(authenticationData);
+                call.resolve(authenticationData);
             }
         }
     }
@@ -73,7 +78,7 @@ public class GoogleAuth: CAPPlugin {
         DispatchQueue.main.async {
             self.googleSignIn.signOut();
         }
-        call.success();
+        call.resolve();
     }
 
     @objc
@@ -106,14 +111,14 @@ public class GoogleAuth: CAPPlugin {
         if let imageUrl = user.profile.imageURL(withDimension: 100)?.absoluteString {
             userData["imageUrl"] = imageUrl;
         }
-        signInCall?.success(userData);
+        signInCall?.resolve(userData);
     }
 }
 
 extension GoogleAuth: GIDSignInDelegate {
     public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
-            signInCall?.error(error.localizedDescription);
+            signInCall?.reject(error.localizedDescription);
             return;
         }
         processCallback(user: user);
