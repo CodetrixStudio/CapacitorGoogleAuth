@@ -60,7 +60,7 @@ initializeApp() {
 sign in function 
 ```ts
 async googleSignIn() {
-  let googleUser = await Plugins.GoogleAuth.signIn();
+  let googleUser = await GoogleAuth.signIn();
   const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
   return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
 }
