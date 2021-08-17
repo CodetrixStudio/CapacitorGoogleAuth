@@ -32,29 +32,32 @@ for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/Capacito
 Register plugin and manually initialize
 
 ```ts
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 GoogleAuth.init({
   client_id: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
   grantOfflineAccess: true,
-})
+});
 ```
 
 or if need use meta tags
+
 ```html
 <meta name="google-signin-client_id" content="{your client id here}" />
-<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-scope" content="profile email" />
 ```
+
 #### Options
 
+- ``
 - `scopes` – same as [Configure](#Configure) scopes
-- `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser. 
+- `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser.
 
 Use it
 
 ```ts
-GoogleAuth.signIn()
+GoogleAuth.signIn();
 ```
 
 #### AngularFire2
@@ -71,25 +74,25 @@ async googleSignIn() {
 
 ```ts
 // App.vue
-import { defineComponent, onMounted } from 'vue'
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { defineComponent, onMounted } from 'vue';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 export default defineComponent({
   setup() {
     onMounted(() => {
-      GoogleAuth.init()
-    })
+      GoogleAuth.init();
+    });
 
     const logIn = async () => {
-      const response = await GoogleAuth.signIn()
-      console.log(response)
-    }
+      const response = await GoogleAuth.signIn();
+      console.log(response);
+    };
 
     return {
       logIn,
-    }
+    };
   },
-})
+});
 ```
 
 ### iOS
@@ -157,9 +160,9 @@ const config: CapacitorConfig = {
       forceCodeForRefreshToken: true,
     },
   },
-}
+};
 
-export default config
+export default config;
 ```
 
 ### Migration guide
