@@ -42,8 +42,10 @@ Register plugin and manually initialize
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
+// use hook after platform dom ready
 GoogleAuth.init()
 ```
+
 
 Use it
 ```ts
@@ -51,9 +53,25 @@ GoogleAuth.signIn()
 ```
 
 #### AngularFire2
+
+init hook
+```ts
+// app.component.ts   
+constructor() {
+  this.initializeApp();
+}
+
+initializeApp() {
+  this.platform.ready().then(() => {
+    GoogleAuth.init()
+  })
+}
+```
+
+sign in function 
 ```ts
 async googleSignIn() {
-  let googleUser = await Plugins.GoogleAuth.signIn();
+  let googleUser = await GoogleAuth.signIn();
   const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
   return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
 }
@@ -126,7 +144,7 @@ Provide configuration in root `capacitor.config.json`
 Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
 
 
-### Migration guide
+## Migration guide
 
 #### Migrate from 2 to 3
 
@@ -136,7 +154,7 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 ```diff
 - import "@codetrix-studio/capacitor-google-auth";
 - import { Plugins } from '@capacitor/core';
-+ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
++ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 - Plugins.GoogleAuth.signIn();
 + GoogleAuth.init()
