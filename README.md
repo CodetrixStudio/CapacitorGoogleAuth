@@ -3,6 +3,7 @@
 Capacitor plugin for Google Auth.
 
 ## Contributions
+
 PRs are welcome and much appreciated that keeps this plugin up to date with Capacitor and official Google Auth platform library feature parity.
 
 Try to follow good code practices. You can even help keeping the included demo updated.
@@ -10,8 +11,6 @@ Try to follow good code practices. You can even help keeping the included demo u
 PRs for features that are not aligned with the official Google Auth library are discouraged.
 
 (We are beginner-friendly here)
-
-
 
 ## Install
 
@@ -62,7 +61,7 @@ or if need use meta tags
 
 #### Options
 
-- `client_id` - 
+- `client_id` - The app's client ID, found and created in the Google Developers Console.
 - `scopes` – same as [Configure](#Configure) scopes
 - `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser.
 
@@ -75,8 +74,9 @@ GoogleAuth.signIn();
 #### AngularFire2
 
 init hook
+
 ```ts
-// app.component.ts   
+// app.component.ts
 constructor() {
   this.initializeApp();
 }
@@ -88,7 +88,8 @@ initializeApp() {
 }
 ```
 
-sign in function 
+sign in function
+
 ```ts
 async googleSignIn() {
   let googleUser = await GoogleAuth.signIn();
