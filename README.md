@@ -1,9 +1,11 @@
 # CapacitorGoogleAuth
+
 Capacitor plugin for Google Auth.
 
 ## Install
 
 #### 1. Install package
+
 ```bash
 npm i --save @codetrix-studio/capacitor-google-auth
 
@@ -12,38 +14,48 @@ npm i --save @codetrix-studio/capacitor-google-auth@2.1.3
 ```
 
 #### 2. Update capacitor deps
+
 ```sh
 npx cap update
 ```
+
 #### 3. Migrate from 2 to 3 version
+
 if your migrate from Capacitor 2 to Capacitor 3 [see instruction for migrate plugin to new version](#migrate-from-2-to-3)
 
 ## Usage
+
 for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/CapacitorGoogleAuth/blob/79129ab37288f5f5d0bb9a568a95890e852cebc2/README.md)
 
 ### WEB
+
 Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#specify_your_apps_client_id) meta tag to head.
+
 ```html
-<meta name="google-signin-client_id" content="{your client id here}">
+<meta name="google-signin-client_id" content="{your client id here}" />
 ```
 
 Register plugin and manually initialize
+
 ```ts
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 GoogleAuth.init({
-  scopes: ["profile", "email"],
-  offline: true
+  scopes: ['profile', 'email'],
+  offline: true,
 })
 ```
+
 > see `init` method options - descriptions, examples, default values and types in `definition.ts`
 
 Use it
+
 ```ts
 GoogleAuth.signIn()
 ```
 
 #### AngularFire2
+
 ```ts
 async googleSignIn() {
   let googleUser = await Plugins.GoogleAuth.signIn();
@@ -53,6 +65,7 @@ async googleSignIn() {
 ```
 
 #### Vue 3
+
 ```ts
 // App.vue
 import { defineComponent, onMounted } from 'vue'
@@ -63,26 +76,29 @@ export default defineComponent({
     onMounted(() => {
       GoogleAuth.init()
     })
-    
+
     const logIn = async () => {
       const response = await GoogleAuth.signIn()
       console.log(response)
     }
-    
+
     return {
-      logIn
+      logIn,
     }
-  }
+  },
 })
 ```
 
 ### iOS
+
 Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
 
 Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
 
 ### Android
+
 Inside your `strings.xml`
+
 ```xml
 <resources>
   <string name="server_client_id">Your Web Client Key</string>
@@ -90,11 +106,13 @@ Inside your `strings.xml`
 ```
 
 Import package inside your `MainActivity`
+
 ```java
 import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 ```
 
 Register plugin inside your `MainActivity.onCreate`
+
 ```java
 this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
   add(GoogleAuth.class);
@@ -102,18 +120,25 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 ```
 
 ## Configure
+
+| Name                     | Type     | Default | Example                                              | Description                                                                                                                   |
+| ------------------------ | -------- | ------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| scopes                   | string[] | []      | ["profile", "email"]                                 | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
+| serverClientId           | string   | ''      | xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com | This is used for offline access and serverside handling                                                                       |
+| forceCodeForRefreshToken | boolean  | false   | false                                                | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
+
 Provide configuration in root `capacitor.config.json`
+
 ```json
 {
   "plugins": {
     "GoogleAuth": {
       "scopes": ["profile", "email"],
       "serverClientId": "xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
-      "forceCodeForRefreshToken" : true
+      "forceCodeForRefreshToken": true
     }
   }
 }
-
 ```
 
 or in `capacitor.config.ts`
@@ -124,19 +149,17 @@ or in `capacitor.config.ts`
 const config: CapacitorConfig = {
   plugins: {
     GoogleAuth: {
-      scopes: ["profile", "email"],
-      serverClientId: "xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
-      forceCodeForRefreshToken : true
-    }
+      scopes: ['profile', 'email'],
+      serverClientId: 'xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
+      forceCodeForRefreshToken: true,
+    },
   },
-};
+}
 
-export default config;
-
+export default config
 ```
 
 Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
-
 
 ### Migration guide
 
@@ -145,6 +168,7 @@ Note : `forceCodeForRefreshToken` force user to select email address to regenera
 After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
 
 ##### WEB
+
 ```diff
 - import "@codetrix-studio/capacitor-google-auth";
 - import { Plugins } from '@capacitor/core';
