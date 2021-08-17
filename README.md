@@ -37,7 +37,7 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 GoogleAuth.init({
   client_id: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
-  offlineAccess: true,
+  grantOfflineAccess: true,
 })
 ```
 
@@ -49,7 +49,7 @@ or if need use meta tags
 #### Options
 
 - `scopes` – same as [Configure](#Configure) scopes
-- `offlineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser. 
+- `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser. 
 
 Use it
 

@@ -5,7 +5,7 @@ import { User, Authentication } from './user'
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>
   options: GoogleAuthPluginOptionsWeb = {
-    offlineAccess: false,
+    grantOfflineAccess: false,
     scopes: [],
   }
 
@@ -71,7 +71,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return new Promise(async (resolve, reject) => {
       try {
         var serverAuthCode: string
-        var needsOfflineAccess = this.options?.offlineAccess ?? false
+        var needsOfflineAccess = this.options?.grantOfflineAccess ?? false
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2

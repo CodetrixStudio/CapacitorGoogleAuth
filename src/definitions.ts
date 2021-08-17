@@ -39,7 +39,7 @@ export interface GoogleAuthPluginOptionsWeb
    * @default false
    * @since 3.0.2
    * */
-  offlineAccess: boolean
+   grantOfflineAccess: boolean
 }
 
 export interface GoogleAuthPlugin {
