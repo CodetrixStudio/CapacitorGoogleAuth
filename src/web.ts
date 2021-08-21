@@ -18,8 +18,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       return;
     }
 
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
+    const head = document.getElementsByTagName('head')[0];
+    const script = document.createElement('script');
 
     script.type = 'text/javascript';
     script.defer = true;
@@ -75,8 +75,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   async signIn(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        var serverAuthCode: string;
-        var needsOfflineAccess = this.options.grantOfflineAccess ?? false;
+        let serverAuthCode: string;
+        const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
