@@ -36,15 +36,15 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     }
 
     const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any).content;
-    const client_id = _options.client_id ?? metaClientId;
+    const client_id = _options.client_id || metaClientId || '';
 
-    if (client_id) {
+    if (!client_id) {
       console.warn('GoogleAuthPlugin - client_id is empty');
     }
 
     this.options = {
       client_id,
-      grantOfflineAccess: _options.grantOfflineAccess || false,
+      grantOfflineAccess: _options.grantOfflineAccess ?? false,
       scopes: _options.scopes || [],
     };
 
@@ -60,7 +60,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   platformJsLoaded() {
     gapi.load('auth2', () => {
       const clientConfig: gapi.auth2.ClientConfig = {
-        client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content,
+        client_id: this.options.client_id,
       };
 
       if (this.options.scopes.length) {
@@ -76,7 +76,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return new Promise(async (resolve, reject) => {
       try {
         var serverAuthCode: string;
-        var needsOfflineAccess = this.options?.grantOfflineAccess ?? false;
+        var needsOfflineAccess = this.options.grantOfflineAccess ?? false;
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
