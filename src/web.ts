@@ -1,22 +1,10 @@
 import { WebPlugin } from '@capacitor/core';
-import { GoogleAuthPlugin, GoogleAuthPluginOptionsWeb } from './definitions';
+import { GoogleAuthPlugin, InitOptions } from './definitions';
 import { User, Authentication } from './user';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
-  options: GoogleAuthPluginOptionsWeb = {
-    client_id: '',
-    grantOfflineAccess: false,
-    scopes: [],
-  };
-
-  get webConfigured(): boolean {
-    if (typeof document !== 'undefined') {
-      return document.getElementsByName('google-signin-client_id').length > 0;
-    } else {
-      return false;
-    }
-  }
+  options: InitOptions;
 
   constructor() {
     super();
@@ -42,14 +30,23 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     head.appendChild(script);
   }
 
-  init(_options?: Partial<GoogleAuthPluginOptionsWeb>) {
-    if (!this.webConfigured) {
+  init(_options?: Partial<InitOptions>) {
+    if (typeof window === 'undefined') {
       return;
     }
 
-    if (_options) {
-      this.options = { ..._options, ...this.options };
+    const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any).content;
+    const client_id = _options.client_id ?? metaClientId;
+
+    if (client_id) {
+      console.warn('GoogleAuthPlugin - client_id is empty');
     }
+
+    this.options = {
+      client_id,
+      grantOfflineAccess: _options.grantOfflineAccess || false,
+      scopes: _options.scopes || [],
+    };
 
     this.gapiLoaded = new Promise((resolve) => {
       // HACK: Relying on window object, can't get property in gapi.load callback

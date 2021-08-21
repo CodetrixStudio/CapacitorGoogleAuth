@@ -29,10 +29,12 @@ export interface GoogleAuthPluginOptions {
   forceCodeForRefreshToken: boolean;
 }
 
-export interface GoogleAuthPluginOptionsWeb extends Pick<GoogleAuthPluginOptions, 'scopes'> {
-  /** The app's client ID, found and created in the Google Developers Console. */
-
+export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes'> {
+  /** The app's client ID, found and created in the Google Developers Console.
+   * @since 3.0.2
+   */
   client_id: string;
+
   /**
    * Set if your application needs to refresh access tokens when the user is not present at the browser.
    * In response use `serverAuthCode` key
