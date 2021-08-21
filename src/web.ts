@@ -23,20 +23,20 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   loadScript() {
-    const scriptId = 'gapi'
-    const scriptEl = document?.getElementById(scriptId)
-    
+    const scriptId = 'gapi';
+    const scriptEl = document?.getElementById(scriptId);
+
     if (scriptEl) {
-      return
+      return;
     }
 
-    var head = document.getElementsByTagName('head')[0]
-    var script = document.createElement('script')
-    
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+
     script.type = 'text/javascript';
     script.defer = true;
     script.async = true;
-    script.id = scriptId
+    script.id = scriptId;
     script.onload = this.platformJsLoaded;
     script.src = 'https://apis.google.com/js/platform.js';
     head.appendChild(script);
