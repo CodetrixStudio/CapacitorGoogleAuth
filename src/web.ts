@@ -11,6 +11,10 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   loadScript() {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     const scriptId = 'gapi';
     const scriptEl = document?.getElementById(scriptId);
 
