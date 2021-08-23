@@ -63,7 +63,7 @@ export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes'> {
 }
 
 export interface GoogleAuthPlugin {
-  signIn(): Promise<User>;
+  signIn(): Promise<User | undefined>;
   refresh(): Promise<Authentication>;
   signOut(): Promise<any>;
 

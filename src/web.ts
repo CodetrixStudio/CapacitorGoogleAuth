@@ -75,36 +75,34 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
-  async signIn(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let serverAuthCode: string;
-        const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
+  async signIn() {
+    try {
+      let serverAuthCode: string;
+      const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
 
-        if (needsOfflineAccess) {
-          const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
-          serverAuthCode = offlineAccessResponse.code;
-        } else {
-          await gapi.auth2.getAuthInstance().signIn();
-        }
-
-        const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-
-        if (needsOfflineAccess) {
-          // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
-          await googleUser.reloadAuthResponse();
-        }
-
-        const user = this.getUserFrom(googleUser);
-        user.serverAuthCode = serverAuthCode;
-        resolve(user);
-      } catch (error) {
-        reject(error);
+      if (needsOfflineAccess) {
+        const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
+        serverAuthCode = offlineAccessResponse.code;
+      } else {
+        await gapi.auth2.getAuthInstance().signIn();
       }
-    });
+
+      const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+      if (needsOfflineAccess) {
+        // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
+        await googleUser.reloadAuthResponse();
+      }
+
+      const user = this.getUserFrom(googleUser);
+      user.serverAuthCode = serverAuthCode;
+      return user;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  async refresh(): Promise<Authentication> {
+  async refresh() {
     const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
     return {
       accessToken: authResponse.access_token,
@@ -112,7 +110,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     };
   }
 
-  async signOut(): Promise<any> {
+  async signOut() {
     return gapi.auth2.getAuthInstance().signOut();
   }
 
@@ -123,7 +121,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
-  private getUserFrom(googleUser: gapi.auth2.GoogleUser): User {
+  private getUserFrom(googleUser: gapi.auth2.GoogleUser) {
     const user = {} as User;
     const profile = googleUser.getBasicProfile();
 
