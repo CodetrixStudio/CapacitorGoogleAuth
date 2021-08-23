@@ -111,6 +111,7 @@ export default defineComponent({
   },
 });
 ```
+or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/CapacitorGoogleAuth-Vue3-example)
 
 ### iOS
 
