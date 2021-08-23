@@ -6,5 +6,4 @@ const GoogleAuth = registerPlugin<GoogleAuthPlugin>('GoogleAuth', {
 });
 
 export * from './definitions';
-
 export { GoogleAuth };

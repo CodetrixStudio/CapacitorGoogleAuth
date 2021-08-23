@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { GoogleAuthPlugin, InitOptions, User, Authentication } from './definitions';
+import { Authentication, GoogleAuthPlugin, InitOptions, User } from './definitions';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
@@ -76,30 +76,32 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   async signIn() {
-    try {
-      let serverAuthCode: string;
-      const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
+    return new Promise<User>(async (resolve, reject) => {
+      try {
+        let serverAuthCode: string;
+        const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
 
-      if (needsOfflineAccess) {
-        const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
-        serverAuthCode = offlineAccessResponse.code;
-      } else {
-        await gapi.auth2.getAuthInstance().signIn();
+        if (needsOfflineAccess) {
+          const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
+          serverAuthCode = offlineAccessResponse.code;
+        } else {
+          await gapi.auth2.getAuthInstance().signIn();
+        }
+
+        const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+        if (needsOfflineAccess) {
+          // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
+          await googleUser.reloadAuthResponse();
+        }
+
+        const user = this.getUserFrom(googleUser);
+        user.serverAuthCode = serverAuthCode;
+        resolve(user);
+      } catch (error) {
+        reject(error);
       }
-
-      const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-
-      if (needsOfflineAccess) {
-        // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
-        await googleUser.reloadAuthResponse();
-      }
-
-      const user = this.getUserFrom(googleUser);
-      user.serverAuthCode = serverAuthCode;
-      return user;
-    } catch (error) {
-      throw new Error(error);
-    }
+    });
   }
 
   async refresh() {
