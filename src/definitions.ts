@@ -22,6 +22,11 @@ export interface User {
 export interface Authentication {
   accessToken: string;
   idToken: string;
+
+  /**
+   * refreshToken only for iOS and Android
+   */
+  refreshToken?: string;
 }
 
 export interface GoogleAuthPluginOptions {

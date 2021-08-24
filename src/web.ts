@@ -115,6 +115,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     return {
       accessToken: authResponse.access_token,
       idToken: authResponse.id_token,
+      refreshToken: '',
     };
   }
 
@@ -144,6 +145,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     user.authentication = {
       accessToken: authResponse.access_token,
       idToken: authResponse.id_token,
+      refreshToken: '',
     };
 
     return user;
