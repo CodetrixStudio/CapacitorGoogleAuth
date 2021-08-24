@@ -68,5 +68,5 @@ export interface GoogleAuthPlugin {
   signOut(): Promise<any>;
 
   /** Init hook for load gapi and init plugin */
-  init(): void;
+  init(options?: InitOptions): void;
 }
