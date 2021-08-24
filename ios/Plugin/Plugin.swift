@@ -33,7 +33,7 @@ public class GoogleAuth: CAPPlugin {
             forceAuthCode = forceAuthCodeConfig;
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(Notification.Name.capacitorOpenURL.rawValue), object: nil);
     }
 
     @objc
@@ -68,7 +68,7 @@ public class GoogleAuth: CAPPlugin {
                 }
                 let authenticationData: [String: Any] = [
                     "accessToken": authentication.accessToken,
-                    "idToken": authentication.idToken,
+                    "idToken": authentication.idToken ?? NSNull(),
                     "refreshToken": authentication.refreshToken
                 ]
                 call.resolve(authenticationData);
@@ -127,12 +127,12 @@ public class GoogleAuth: CAPPlugin {
                 "idToken": user.authentication.idToken,
                 "refreshToken": user.authentication.refreshToken
             ],
-            "serverAuthCode": user.serverAuthCode,
-            "email": user.profile?.email,
-            "familyName": user.profile?.familyName,
-            "givenName": user.profile?.givenName,
-            "id": user.userID,
-            "name": user.profile?.name
+            "serverAuthCode": user.serverAuthCode ?? NSNull(),
+            "email": user.profile?.email ?? NSNull(),
+            "familyName": user.profile?.familyName ?? NSNull(),
+            "givenName": user.profile?.givenName ?? NSNull(),
+            "id": user.userID ?? NSNull(),
+            "name": user.profile?.name ?? NSNull()
         ];
         if let imageUrl = user.profile?.imageURL(withDimension: 100)?.absoluteString {
             userData["imageUrl"] = imageUrl;
