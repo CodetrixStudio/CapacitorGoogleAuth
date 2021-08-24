@@ -35,7 +35,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
   init(
     _options: Partial<InitOptions> = {
-      client_id: '',
+      clientId: '',
       scopes: [],
       grantOfflineAccess: false,
     }
@@ -45,14 +45,14 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     }
 
     const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any)?.content;
-    const client_id = _options.client_id || metaClientId || '';
+    const clientId = _options.clientId || metaClientId || '';
 
-    if (!client_id) {
-      console.warn('GoogleAuthPlugin - client_id is empty');
+    if (!clientId) {
+      console.warn('GoogleAuthPlugin - clientId is empty');
     }
 
     this.options = {
-      client_id,
+      clientId,
       grantOfflineAccess: _options.grantOfflineAccess ?? false,
       scopes: _options.scopes || [],
     };
@@ -69,7 +69,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   platformJsLoaded() {
     gapi.load('auth2', () => {
       const clientConfig: gapi.auth2.ClientConfig = {
-        client_id: this.options.client_id,
+        client_id: this.options.clientId,
       };
 
       if (this.options.scopes.length) {

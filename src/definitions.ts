@@ -50,7 +50,7 @@ export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes'> {
   /** The app's client ID, found and created in the Google Developers Console.
    * @since 3.0.2
    */
-  client_id: string;
+  clientId: string;
 
   /**
    * Set if your application needs to refresh access tokens when the user is not present at the browser.
@@ -68,5 +68,5 @@ export interface GoogleAuthPlugin {
   signOut(): Promise<any>;
 
   /** Init hook for load gapi and init plugin */
-  init(options?: InitOptions): void;
+  init(options?: Partial<InitOptions>): void;
 }
