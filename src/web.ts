@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { Authentication, GoogleAuthPlugin, InitOptions, User } from './definitions';
+import { GoogleAuthPlugin, InitOptions, User } from './definitions';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
@@ -33,13 +33,13 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     head.appendChild(script);
   }
 
-  init(_options?: Partial<InitOptions>) {
+  init(_options: Partial<InitOptions> = {}) {
     if (typeof window === 'undefined') {
       return;
     }
 
-    const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any).content;
-    const client_id = _options.client_id || metaClientId || '';
+    const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any)?.content;
+    const client_id = _options?.client_id || metaClientId || '';
 
     if (!client_id) {
       console.warn('GoogleAuthPlugin - client_id is empty');
