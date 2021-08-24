@@ -33,7 +33,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     head.appendChild(script);
   }
 
-  init(
+  initialize(
     _options: Partial<InitOptions> = {
       clientId: '',
       scopes: [],
