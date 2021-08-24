@@ -28,18 +28,24 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     script.defer = true;
     script.async = true;
     script.id = scriptId;
-    script.onload = this.platformJsLoaded;
+    script.onload = this.platformJsLoaded.bind(this);
     script.src = 'https://apis.google.com/js/platform.js';
     head.appendChild(script);
   }
 
-  init(_options: Partial<InitOptions> = {}) {
+  init(
+    _options: Partial<InitOptions> = {
+      client_id: '',
+      scopes: [],
+      grantOfflineAccess: false,
+    }
+  ) {
     if (typeof window === 'undefined') {
       return;
     }
 
     const metaClientId = (document.getElementsByName('google-signin-client_id')[0] as any)?.content;
-    const client_id = _options?.client_id || metaClientId || '';
+    const client_id = _options.client_id || metaClientId || '';
 
     if (!client_id) {
       console.warn('GoogleAuthPlugin - client_id is empty');
