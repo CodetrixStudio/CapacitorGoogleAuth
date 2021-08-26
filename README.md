@@ -84,12 +84,29 @@ export default defineComponent({
 ```
 
 ### iOS
-Make sure you have `GoogleService-Info.plist` with `CLIENT_ID`
 
-Add `REVERSED_CLIENT_ID` as url scheme to `Info.plist`
+1. Create in Google cloud console credential **Client ID for iOS** and get **Client ID** and **iOS URL scheme**
+
+2. Add **identifier** `REVERSED_CLIENT_ID` as **URL schemes** to `Info.plist` from **iOS URL scheme**<br>
+(Xcode: App - Targets/App - Info - URL Types, click plus icon)
+
+ 3. Set **Client ID** one of the ways:
+    1. Set in `capacitor.config.json`
+        - `iosClientId` - specific key for iOS
+        - `clientId` - or common key for Android and iOS  
+    3. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
+
+
 
 ### Android
-Inside your `strings.xml`
+
+Set **Client ID** :
+
+1. In `capacitor.config.json`
+    - `androidClientId` - specific key for Android
+    - `clientId` - or common key for Android and iOS  
+
+2. or set inside your `strings.xml`
 ```xml
 <resources>
   <string name="server_client_id">Your Web Client Key</string>
