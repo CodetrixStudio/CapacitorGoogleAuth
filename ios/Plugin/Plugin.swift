@@ -37,7 +37,7 @@ public class GoogleAuth: CAPPlugin {
     }
 
     @objc
-    func init(_ call: CAPPluginCall) {
+    func `init`(_ call: CAPPluginCall) {
         call.unimplemented("Not available on iOS")
     }
 
