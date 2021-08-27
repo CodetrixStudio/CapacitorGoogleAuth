@@ -53,6 +53,11 @@ public class GoogleAuth extends Plugin {
     googleSignInClient = GoogleSignIn.getClient(this.getContext(), googleSignInOptions);
   }
 
+  @PluginMethod
+  public void init(PluginCall call) {
+      call.unimplemented();
+  }
+
   @PluginMethod()
   public void signIn(PluginCall call) {
     saveCall(call);

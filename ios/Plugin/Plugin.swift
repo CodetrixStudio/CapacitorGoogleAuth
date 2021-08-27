@@ -37,6 +37,11 @@ public class GoogleAuth: CAPPlugin {
     }
 
     @objc
+    func init(_ call: CAPPluginCall) {
+        call.unimplemented("Not available on iOS")
+    }
+
+    @objc
     func signIn(_ call: CAPPluginCall) {
         signInCall = call;
         DispatchQueue.main.async {
