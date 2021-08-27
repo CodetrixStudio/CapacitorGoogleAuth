@@ -27,13 +27,11 @@ public class GoogleAuth extends Plugin {
 
   @Override
   public void load() {
-    String clientId = this.getContext().getString(R.string.server_client_id);
-    boolean forceCodeForRefreshToken = false;
+    String clientId = getConfig().getString("androidClientId",
+      getConfig().getString("clientId",
+        this.getContext().getString(R.string.server_client_id)));
 
-    Boolean forceRefreshToken = (Boolean) getConfigValue("forceCodeForRefreshToken");
-    if (forceRefreshToken != null) {
-      forceCodeForRefreshToken = forceRefreshToken;
-    }
+    boolean forceCodeForRefreshToken = getConfig().getBoolean("forceCodeForRefreshToken", false);
 
     GoogleSignInOptions.Builder googleSignInBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(clientId)
@@ -43,17 +41,13 @@ public class GoogleAuth extends Plugin {
       googleSignInBuilder.requestServerAuthCode(clientId, true);
     }
 
-    try {
-      JSONArray scopeArray = (JSONArray) getConfigValue("scopes");
-      Scope[] scopes = new Scope[scopeArray.length() - 1];
-      Scope firstScope = new Scope(scopeArray.getString(0));
-      for (int i = 1; i < scopeArray.length(); i++) {
-        scopes[i - 1] = new Scope(scopeArray.getString(i));
-      }
-      googleSignInBuilder.requestScopes(firstScope, scopes);
-    } catch (JSONException e) {
-      e.printStackTrace();
+    String[] scopeArray = getConfig().getArray("scopes", new String[] {});
+    Scope[] scopes = new Scope[scopeArray.length - 1];
+    Scope firstScope = new Scope(scopeArray[0]);
+    for (int i = 1; i < scopeArray.length; i++) {
+      scopes[i - 1] = new Scope(scopeArray[i]);
     }
+    googleSignInBuilder.requestScopes(firstScope, scopes);
 
     GoogleSignInOptions googleSignInOptions = googleSignInBuilder.build();
     googleSignInClient = GoogleSignIn.getClient(this.getContext(), googleSignInOptions);

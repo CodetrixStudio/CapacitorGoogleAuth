@@ -8,34 +8,36 @@ import GoogleSignIn
  */
 @objc(GoogleAuth)
 public class GoogleAuth: CAPPlugin {
-    var signInCall: CAPPluginCall?
-    let googleSignIn: GIDSignIn = GIDSignIn.sharedInstance();
+    var signInCall: CAPPluginCall!
+    var googleSignIn: GIDSignIn!;
+    var googleSignInConfiguration: GIDConfiguration!;
     var forceAuthCode: Bool = false;
+    var scopes: [String]?;
 
+    
     public override func load() {
-        guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") else {
-            print("GoogleService-Info.plist not found");
+        googleSignIn = GIDSignIn.sharedInstance;
+        
+        let serverClientId = getServerClientIdValue();
+        
+        guard let clientId = getClientIdValue() else {
+            NSLog("no client id found in config")
             return;
         }
-        guard let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {return}
-        guard let clientId = dict["CLIENT_ID"] as? String else {return}
-        googleSignIn.clientID = clientId;
-        googleSignIn.delegate = self;
-        googleSignIn.presentingViewController = bridge?.viewController;
-        if let serverClientId = getConfigValue("serverClientId") as? String {
-            googleSignIn.serverClientID = serverClientId;
-        }
-        if let scopes = getConfigValue("scopes") as? [String] {
-            googleSignIn.scopes = scopes;
-        }
+
+        googleSignInConfiguration = GIDConfiguration.init(clientID: clientId, serverClientID: serverClientId)
+
+        scopes = getConfigValue("scopes") as? [String];
+        
         if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? Bool {
             forceAuthCode = forceAuthCodeConfig;
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil);
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(Notification.Name.capacitorOpenURL.rawValue), object: nil);
     }
 
     @objc
-    func init(_ call: CAPPluginCall) {
+    func `init`(_ call: CAPPluginCall) {
         call.unimplemented("Not available on iOS")
     }
 
@@ -46,7 +48,13 @@ public class GoogleAuth: CAPPlugin {
             if self.googleSignIn.hasPreviousSignIn() && !self.forceAuthCode {
                 self.googleSignIn.restorePreviousSignIn();
             } else {
-                self.googleSignIn.signIn();
+                self.googleSignIn.signIn(with: self.googleSignInConfiguration, presenting: self.bridge!.viewController!) {  user, error in
+                    if let error = error {
+                        self.signInCall?.reject(error.localizedDescription);
+                        return;
+                    }
+                    self.processCallback(user: user!);
+                };
             }
         }
     }
@@ -58,14 +66,14 @@ public class GoogleAuth: CAPPlugin {
                 call.reject("User not logged in.");
                 return
             }
-            self.googleSignIn.currentUser.authentication.getTokensWithHandler { (authentication, error) in
+            self.googleSignIn.currentUser!.authentication.do { (authentication, error) in
                 guard let authentication = authentication else {
                     call.reject(error?.localizedDescription ?? "Something went wrong.");
                     return;
                 }
                 let authenticationData: [String: Any] = [
                     "accessToken": authentication.accessToken,
-                    "idToken": authentication.idToken,
+                    "idToken": authentication.idToken ?? NSNull(),
                     "refreshToken": authentication.refreshToken
                 ]
                 call.resolve(authenticationData);
@@ -93,6 +101,29 @@ public class GoogleAuth: CAPPlugin {
         }
         googleSignIn.handle(url);
     }
+    
+    
+    func getClientIdValue() -> String? {
+        if let clientId = getConfigValue("iosClientId") as? String {
+            return clientId;
+        }
+        else if let clientId = getConfigValue("clientId") as? String {
+            return clientId;
+        }
+        else if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+                let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject],
+                let clientId = dict["CLIENT_ID"] as? String {
+            return clientId;
+        }
+        return nil;
+    }
+    
+    func getServerClientIdValue() -> String? {
+        if let serverClientId = getConfigValue("serverClientId") as? String {
+            return serverClientId;
+        }
+        return nil;
+    }
 
     func processCallback(user: GIDGoogleUser) {
         var userData: [String: Any] = [
@@ -101,26 +132,16 @@ public class GoogleAuth: CAPPlugin {
                 "idToken": user.authentication.idToken,
                 "refreshToken": user.authentication.refreshToken
             ],
-            "serverAuthCode": user.serverAuthCode,
-            "email": user.profile.email,
-            "familyName": user.profile.familyName,
-            "givenName": user.profile.givenName,
-            "id": user.userID,
-            "name": user.profile.name
+            "serverAuthCode": user.serverAuthCode ?? NSNull(),
+            "email": user.profile?.email ?? NSNull(),
+            "familyName": user.profile?.familyName ?? NSNull(),
+            "givenName": user.profile?.givenName ?? NSNull(),
+            "id": user.userID ?? NSNull(),
+            "name": user.profile?.name ?? NSNull()
         ];
-        if let imageUrl = user.profile.imageURL(withDimension: 100)?.absoluteString {
+        if let imageUrl = user.profile?.imageURL(withDimension: 100)?.absoluteString {
             userData["imageUrl"] = imageUrl;
         }
         signInCall?.resolve(userData);
-    }
-}
-
-extension GoogleAuth: GIDSignInDelegate {
-    public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        if let error = error {
-            signInCall?.reject(error.localizedDescription);
-            return;
-        }
-        processCallback(user: user);
     }
 }
