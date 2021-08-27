@@ -6,7 +6,6 @@ import { User, Authentication } from './user';
 import config from '../../../../../capacitor.config.json';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
-
   gapiLoaded: Promise<void>;
 
   get webConfigured(): boolean {
@@ -22,30 +21,29 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   loadScript() {
-    const scriptId = 'gapi'
-    const scriptEl = document?.getElementById(scriptId)
-    
+    const scriptId = 'gapi';
+    const scriptEl = document?.getElementById(scriptId);
+
     if (scriptEl) {
-      return
+      return;
     }
 
-    var head = document.getElementsByTagName('head')[0]
-    var script = document.createElement('script')
-    
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+
     script.type = 'text/javascript';
     script.defer = true;
     script.async = true;
-    script.id = scriptId
+    script.id = scriptId;
     script.onload = this.platformJsLoaded;
     script.src = 'https://apis.google.com/js/platform.js';
     head.appendChild(script);
   }
 
-  init(){
-    if (!this.webConfigured)
-      return;
+  init() {
+    if (!this.webConfigured) return;
 
-    this.gapiLoaded = new Promise(resolve => {
+    this.gapiLoaded = new Promise((resolve) => {
       // HACK: Relying on window object, can't get property in gapi.load callback
       (window as any).gapiResolve = resolve;
       this.loadScript();
@@ -57,7 +55,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   platformJsLoaded() {
     gapi.load('auth2', () => {
       const clientConfig: gapi.auth2.ClientConfig = {
-        client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content
+        client_id: (document.getElementsByName('google-signin-client_id')[0] as any).content,
       };
 
       if (config.plugins.GoogleAuth != null && config.plugins.GoogleAuth.scopes != null) {
@@ -77,9 +75,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
         try {
           needsOfflineAccess = config.plugins.GoogleAuth.serverClientId != null;
-        } catch {
-
-        }
+        } catch {}
 
         if (needsOfflineAccess) {
           const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
@@ -105,11 +101,11 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   }
 
   async refresh(): Promise<Authentication> {
-    const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse()
+    const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
     return {
       accessToken: authResponse.access_token,
-      idToken: authResponse.id_token
-    }
+      idToken: authResponse.id_token,
+    };
   }
 
   async signOut(): Promise<any> {
@@ -118,8 +114,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
 
   private async addUserChangeListener() {
     await this.gapiLoaded;
-    gapi.auth2.getAuthInstance().currentUser.listen(googleUser => {
-      this.notifyListeners("userChange", googleUser.isSignedIn() ? this.getUserFrom(googleUser) : null);
+    gapi.auth2.getAuthInstance().currentUser.listen((googleUser) => {
+      this.notifyListeners('userChange', googleUser.isSignedIn() ? this.getUserFrom(googleUser) : null);
     });
   }
 
@@ -137,8 +133,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     const authResponse = googleUser.getAuthResponse(true);
     user.authentication = {
       accessToken: authResponse.access_token,
-      idToken: authResponse.id_token
-    }
+      idToken: authResponse.id_token,
+    };
 
     return user;
   }
