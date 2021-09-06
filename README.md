@@ -138,6 +138,8 @@ or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/Capaci
       - `clientId` - or common key for Android and iOS
    2. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
 
+plugin first use `iosClientId` if not found use `clientId` if not found use value `CLIENT_ID` from file `GoogleService-Info.plist`
+
 ### Android
 
 Set **Client ID** :
@@ -148,6 +150,8 @@ Set **Client ID** :
    - `clientId` - or common key for Android and iOS
 
 2. or set inside your `strings.xml`
+
+plugin first use `androidClientId` if not found use `clientId` if not found use value `server_client_id` from file `strings.xml`
 
 ```xml
 <resources>

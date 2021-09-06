@@ -31,6 +31,26 @@ export interface Authentication {
 
 export interface GoogleAuthPluginOptions {
   /**
+   * The app's client ID, found and created in the Google Developers Console.
+   * common for Android or iOS
+   * @example xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+   * @since 3.1.0
+   */
+  clientId: string;
+
+  /**
+   * Specific client ID key for iOS
+   * @since 3.1.0
+   */
+  iosClientId: string;
+
+  /**
+   * Specific client ID key for Android
+   * @since 3.1.0
+   */
+  androidClientId: string;
+
+  /**
    * Scopes that you might need to request to access Google APIs
    * @example ["profile", "email"]
    * @default []
@@ -51,18 +71,13 @@ export interface GoogleAuthPluginOptions {
   forceCodeForRefreshToken: boolean;
 }
 
-export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes'> {
-  /** The app's client ID, found and created in the Google Developers Console.
-   * @since 3.0.2
-   */
-  clientId: string;
-
+export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes' | 'clientId'> {
   /**
    * Set if your application needs to refresh access tokens when the user is not present at the browser.
    * In response use `serverAuthCode` key
    *
    * @default false
-   * @since 3.0.2
+   * @since 3.1.0
    * */
   grantOfflineAccess: boolean;
 }
@@ -72,6 +87,9 @@ export interface GoogleAuthPlugin {
   refresh(): Promise<Authentication>;
   signOut(): Promise<any>;
 
-  /** Init hook for load gapi and init plugin */
+  /**
+   * Init hook for load gapi and init plugin
+   * @since 3.1.0
+   * */
   initialize(options?: Partial<InitOptions>): void;
 }
