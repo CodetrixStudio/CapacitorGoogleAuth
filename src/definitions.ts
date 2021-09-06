@@ -36,19 +36,19 @@ export interface GoogleAuthPluginOptions {
    * @example xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
    * @since 3.1.0
    */
-  clientId: string;
+  clientId?: string;
 
   /**
    * Specific client ID key for iOS
    * @since 3.1.0
    */
-  iosClientId: string;
+  iosClientId?: string;
 
   /**
    * Specific client ID key for Android
    * @since 3.1.0
    */
-  androidClientId: string;
+  androidClientId?: string;
 
   /**
    * Scopes that you might need to request to access Google APIs
@@ -56,19 +56,20 @@ export interface GoogleAuthPluginOptions {
    * @default []
    * @see @link https://developers.google.com/identity/protocols/oauth2/scopes
    */
-  scopes: string[];
+  scopes?: string[];
 
   /**
    * This is used for offline access and server side handling
    * @example xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+   * @default false
    */
-  serverClientId: string;
+  serverClientId?: string;
 
   /**
    * Force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android)
    * @default false
    */
-  forceCodeForRefreshToken: boolean;
+  forceCodeForRefreshToken?: boolean;
 }
 
 export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes' | 'clientId'> {
