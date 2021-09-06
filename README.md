@@ -175,11 +175,11 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 
 ## Configure
 
-| Name                     | Type     | Default | Description                                                                                                                   |
-| ------------------------ | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
-| serverClientId           | string   | ''      | This ClientId used for offline access and serverside handling                                                                 |
-| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
+| Name                     | Type     | Default | Description                                                                                                                                                          |
+| ------------------------ | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes<br><br>example: `["profile", "email"]` |
+| serverClientId           | string   | ''      | This is used for offline access and serverside handling<br><br>example: `xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com`                                       |
+| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)                                             |
 
 Provide configuration in root `capacitor.config.json`
 
@@ -215,6 +215,13 @@ export default config;
 
 ## Migration guide
 
+#### Migrate from 3.0.2 to 3.1.0
+
+```diff
+- GoogleAuth.init()
++ GoogleAuth.initialize()
+```
+
 #### Migrate from 2 to 3
 
 After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
@@ -227,6 +234,6 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 + import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 - Plugins.GoogleAuth.signIn();
-+ GoogleAuth.initialize()
++ GoogleAuth.init()
 + GoogleAuth.signIn()
 ```
