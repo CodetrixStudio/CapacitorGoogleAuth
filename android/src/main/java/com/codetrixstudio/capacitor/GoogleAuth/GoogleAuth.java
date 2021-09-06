@@ -100,4 +100,10 @@ public class GoogleAuth extends Plugin {
     googleSignInClient.signOut();
     call.resolve();
   }
+
+  @PluginMethod()
+  public void initialize(final PluginCall call) {
+    call.resolve();
+  }
+
 }

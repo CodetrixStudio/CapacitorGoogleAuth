@@ -45,7 +45,7 @@ Register plugin and manually initialize
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 // use hook after platform dom ready
-GoogleAuth.init({
+GoogleAuth.initialize({
   client_id: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
   grantOfflineAccess: true,
@@ -83,7 +83,7 @@ constructor() {
 
 initializeApp() {
   this.platform.ready().then(() => {
-    GoogleAuth.init()
+    GoogleAuth.initialize()
   })
 }
 ```
@@ -108,7 +108,7 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 export default defineComponent({
   setup() {
     onMounted(() => {
-      GoogleAuth.init();
+      GoogleAuth.initialize();
     });
 
     const logIn = async () => {
@@ -122,6 +122,7 @@ export default defineComponent({
   },
 });
 ```
+
 or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/CapacitorGoogleAuth-Vue3-example)
 
 ### iOS
@@ -129,25 +130,25 @@ or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/Capaci
 1. Create in Google cloud console credential **Client ID for iOS** and get **Client ID** and **iOS URL scheme**
 
 2. Add **identifier** `REVERSED_CLIENT_ID` as **URL schemes** to `Info.plist` from **iOS URL scheme**<br>
-(Xcode: App - Targets/App - Info - URL Types, click plus icon)
+   (Xcode: App - Targets/App - Info - URL Types, click plus icon)
 
- 3. Set **Client ID** one of the ways:
-    1. Set in `capacitor.config.json`
-        - `iosClientId` - specific key for iOS
-        - `clientId` - or common key for Android and iOS  
-    3. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
-
-
+3. Set **Client ID** one of the ways:
+   1. Set in `capacitor.config.json`
+      - `iosClientId` - specific key for iOS
+      - `clientId` - or common key for Android and iOS
+   2. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
 
 ### Android
 
 Set **Client ID** :
 
 1. In `capacitor.config.json`
-    - `androidClientId` - specific key for Android
-    - `clientId` - or common key for Android and iOS  
+
+   - `androidClientId` - specific key for Android
+   - `clientId` - or common key for Android and iOS
 
 2. or set inside your `strings.xml`
+
 ```xml
 <resources>
   <string name="server_client_id">Your Web Client Key</string>
@@ -222,6 +223,6 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 + import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 - Plugins.GoogleAuth.signIn();
-+ GoogleAuth.init()
++ GoogleAuth.initialize()
 + GoogleAuth.signIn()
 ```
