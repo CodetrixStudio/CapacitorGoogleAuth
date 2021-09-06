@@ -14,8 +14,9 @@
   "author": "CodetrixStudio",
   "license": "MIT",
   "devDependencies": {
-    "@capacitor/core": "^3.2.0",
     "@capacitor/android": "^3.2.0",
+    "@capacitor/cli": "^3.2.0",
+    "@capacitor/core": "^3.2.0",
     "@capacitor/ios": "^3.2.0",
     "@ionic/prettier-config": "^2.0.0",
     "@types/gapi": "0.0.41",

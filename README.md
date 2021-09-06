@@ -39,20 +39,31 @@ for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/Capacito
 
 ### WEB
 
-Add [`clientId`](https://developers.google.com/identity/sign-in/web/sign-in#specify_your_apps_client_id) meta tag to head.
-
-```html
-<meta name="google-signin-client_id" content="{your client id here}" />
-```
-
 Register plugin and manually initialize
 
 ```ts
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 // use hook after platform dom ready
-GoogleAuth.init();
+GoogleAuth.initialize({
+  client_id: 'CLIENT_ID.apps.googleusercontent.com',
+  scopes: ['profile', 'email'],
+  grantOfflineAccess: true,
+});
 ```
+
+or if need use meta tags
+
+```html
+<meta name="google-signin-client_id" content="{your client id here}" />
+<meta name="google-signin-scope" content="profile email" />
+```
+
+#### Options
+
+- `client_id` - The app's client ID, found and created in the Google Developers Console.
+- `scopes` – same as [Configure](#Configure) scopes
+- `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser.
 
 Use it
 
@@ -72,7 +83,7 @@ constructor() {
 
 initializeApp() {
   this.platform.ready().then(() => {
-    GoogleAuth.init()
+    GoogleAuth.initialize()
   })
 }
 ```
@@ -97,7 +108,7 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 export default defineComponent({
   setup() {
     onMounted(() => {
-      GoogleAuth.init();
+      GoogleAuth.initialize();
     });
 
     const logIn = async () => {
@@ -111,6 +122,7 @@ export default defineComponent({
   },
 });
 ```
+
 or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/CapacitorGoogleAuth-Vue3-example)
 
 ### iOS
@@ -118,25 +130,29 @@ or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/Capaci
 1. Create in Google cloud console credential **Client ID for iOS** and get **Client ID** and **iOS URL scheme**
 
 2. Add **identifier** `REVERSED_CLIENT_ID` as **URL schemes** to `Info.plist` from **iOS URL scheme**<br>
-(Xcode: App - Targets/App - Info - URL Types, click plus icon)
+   (Xcode: App - Targets/App - Info - URL Types, click plus icon)
 
- 3. Set **Client ID** one of the ways:
-    1. Set in `capacitor.config.json`
-        - `iosClientId` - specific key for iOS
-        - `clientId` - or common key for Android and iOS  
-    3. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
+3. Set **Client ID** one of the ways:
+   1. Set in `capacitor.config.json`
+      - `iosClientId` - specific key for iOS
+      - `clientId` - or common key for Android and iOS
+   2. Download `GoogleService-Info.plist` file with `CLIENT_ID` and copy to **ios/App/App** necessarily through Xcode for indexing.
 
-
+plugin first use `iosClientId` if not found use `clientId` if not found use value `CLIENT_ID` from file `GoogleService-Info.plist`
 
 ### Android
 
 Set **Client ID** :
 
 1. In `capacitor.config.json`
-    - `androidClientId` - specific key for Android
-    - `clientId` - or common key for Android and iOS  
+
+   - `androidClientId` - specific key for Android
+   - `clientId` - or common key for Android and iOS
 
 2. or set inside your `strings.xml`
+
+plugin first use `androidClientId` if not found use `clientId` if not found use value `server_client_id` from file `strings.xml`
+
 ```xml
 <resources>
   <string name="server_client_id">Your Web Client Key</string>
@@ -159,6 +175,12 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 
 ## Configure
 
+| Name                     | Type     | Default | Description                                                                                                                                                          |
+| ------------------------ | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scopes                   | string[] | []      | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes<br><br>example: `["profile", "email"]` |
+| serverClientId           | string   | ''      | This is used for offline access and serverside handling<br><br>example: `xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com`                                       |
+| forceCodeForRefreshToken | boolean  | false   | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)                                             |
+
 Provide configuration in root `capacitor.config.json`
 
 ```json
@@ -173,9 +195,32 @@ Provide configuration in root `capacitor.config.json`
 }
 ```
 
-Note : `forceCodeForRefreshToken` force user to select email address to regenerate AuthCode used to get a valid refreshtoken (work on iOS and Android) (This is used for offline access and serverside handling)
+or in `capacitor.config.ts`
+
+```ts
+/// <reference types="'@codetrix-studio/capacitor-google-auth'" />
+
+const config: CapacitorConfig = {
+  plugins: {
+    GoogleAuth: {
+      scopes: ['profile', 'email'],
+      serverClientId: 'xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
+      forceCodeForRefreshToken: true,
+    },
+  },
+};
+
+export default config;
+```
 
 ## Migration guide
+
+#### Migrate from 3.0.2 to 3.1.0
+
+```diff
+- GoogleAuth.init()
++ GoogleAuth.initialize()
+```
 
 #### Migrate from 2 to 3
 
