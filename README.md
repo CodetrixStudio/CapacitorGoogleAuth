@@ -176,13 +176,13 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 ## Configure
 
 | Name                     | Type     | Description                                                                                                                   |
-| ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+|--------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
 | clientId                 | string   | The app's client ID, found and created in the Google Developers Console.                                                      |
 | iosClientId              | string   | Specific client ID key for iOS                                                                                                |
 | androidClientId          | string   | Specific client ID key for Android                                                                                            |
 | scopes                   | string[] | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
 | serverClientId           | string   | This ClientId used for offline access and server side handling                                                                |
-| forceCodeForRefreshToken | boolean  | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |     |     |
+| forceCodeForRefreshToken | boolean  | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
 
 Provide configuration in root `capacitor.config.json`
 
