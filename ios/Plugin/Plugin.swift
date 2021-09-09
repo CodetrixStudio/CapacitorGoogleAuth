@@ -12,7 +12,7 @@ public class GoogleAuth: CAPPlugin {
     var googleSignIn: GIDSignIn!;
     var googleSignInConfiguration: GIDConfiguration!;
     var forceAuthCode: Bool = false;
-    var scopes: [String]?;
+    var additionalScopes: [String]!;
 
     
     public override func load() {
@@ -26,9 +26,15 @@ public class GoogleAuth: CAPPlugin {
         }
 
         googleSignInConfiguration = GIDConfiguration.init(clientID: clientId, serverClientID: serverClientId)
-
-        scopes = getConfigValue("scopes") as? [String];
         
+        // these are scopes granted by default by the signIn method
+        let defaultGrantedScopes = ["email", "profile", "openid"];
+
+        // these are scopes we will need to request after sign in
+        additionalScopes = (getConfigValue("scopes") as? [String] ?? []).filter {
+            return !defaultGrantedScopes.contains($0);
+        };
+                
         if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? Bool {
             forceAuthCode = forceAuthCodeConfig;
         }
@@ -48,12 +54,26 @@ public class GoogleAuth: CAPPlugin {
             if self.googleSignIn.hasPreviousSignIn() && !self.forceAuthCode {
                 self.googleSignIn.restorePreviousSignIn();
             } else {
-                self.googleSignIn.signIn(with: self.googleSignInConfiguration, presenting: self.bridge!.viewController!) {  user, error in
+                let presentingVc = self.bridge!.viewController!;
+                
+                self.googleSignIn.signIn(with: self.googleSignInConfiguration, presenting: presentingVc) { user, error in
                     if let error = error {
                         self.signInCall?.reject(error.localizedDescription);
                         return;
                     }
-                    self.processCallback(user: user!);
+                    if self.additionalScopes.count > 0 {
+                        // requesting additional scopes in GoogleSignIn-iOS SDK 6.0 requires that you sign the user in and then request additional scopes,
+                        // there's no method to include the additional scopes in the initial sign in request
+                        self.googleSignIn.addScopes(self.additionalScopes, presenting: presentingVc) { user, error in
+                            if let error = error {
+                                self.signInCall?.reject(error.localizedDescription);
+                                return;
+                            }
+                            self.resolveSignInCallWith(user: user!);
+                        }
+                    } else {
+                        self.resolveSignInCallWith(user: user!);
+                    }
                 };
             }
         }
@@ -125,7 +145,7 @@ public class GoogleAuth: CAPPlugin {
         return nil;
     }
 
-    func processCallback(user: GIDGoogleUser) {
+    func resolveSignInCallWith(user: GIDGoogleUser) {
         var userData: [String: Any] = [
             "authentication": [
                 "accessToken": user.authentication.accessToken,
