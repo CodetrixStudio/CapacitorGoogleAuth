@@ -184,6 +184,7 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 | serverClientId           | string   | This ClientId used for offline access and server side handling                                                                |
 | forceCodeForRefreshToken | boolean  | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
 
+
 Provide configuration in root `capacitor.config.json`
 
 ```json
