@@ -110,6 +110,11 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
+  async addScopes(scopes: string[]) {
+    // TODO: web
+    return;
+  }
+
   async refresh() {
     const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
     return {

@@ -93,4 +93,10 @@ export interface GoogleAuthPlugin {
    * @since 3.1.0
    * */
   initialize(options?: Partial<InitOptions>): void;
+
+  /**
+   * Add additional scopes request for user
+   * @since 3.2.0
+   * */
+  addScopes(scopes: string[]): Promise<void>;
 }
