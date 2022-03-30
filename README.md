@@ -46,7 +46,7 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 // use hook after platform dom ready
 GoogleAuth.initialize({
-  client_id: 'CLIENT_ID.apps.googleusercontent.com',
+  clientId: 'CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
   grantOfflineAccess: true,
 });
@@ -61,7 +61,7 @@ or if need use meta tags
 
 #### Options
 
-- `client_id` - The app's client ID, found and created in the Google Developers Console.
+- `clientId` - The app's client ID, found and created in the Google Developers Console.
 - `scopes` – same as [Configure](#Configure) scopes
 - `grantOfflineAccess` – boolean, default `false`, Set if your application needs to refresh access tokens when the user is not present at the browser.
 
