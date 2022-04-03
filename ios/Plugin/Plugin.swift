@@ -52,7 +52,13 @@ public class GoogleAuth: CAPPlugin {
         signInCall = call;
         DispatchQueue.main.async {
             if self.googleSignIn.hasPreviousSignIn() && !self.forceAuthCode {
-                self.googleSignIn.restorePreviousSignIn();
+                self.googleSignIn.restorePreviousSignIn() { user, error in
+                if let error = error {
+                    self.signInCall?.reject(error.localizedDescription);
+                    return;
+                }
+                self.resolveSignInCallWith(user: user!)
+                }
             } else {
                 let presentingVc = self.bridge!.viewController!;
                 
