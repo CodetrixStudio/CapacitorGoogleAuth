@@ -71,8 +71,10 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       // https://github.com/CodetrixStudio/CapacitorGoogleAuth/issues/202#issuecomment-1147393785
       const clientConfig: gapi.auth2.ClientConfig = {
         client_id: this.options.clientId,
-        plugin_name: 'ClarityCapacitorGoogleAuth'
+        // plugin_name: 'ClarityCapacitorGoogleAuth'
       };
+
+
 
       if (this.options.scopes.length) {
         clientConfig.scope = this.options.scopes.join(' ');
