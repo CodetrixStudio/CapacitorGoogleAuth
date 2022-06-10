@@ -1,5 +1,12 @@
 # CapacitorGoogleAuth
 
+
+[![npm](https://img.shields.io/npm/v/@codetrix-studio/capacitor-google-auth)](https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth)
+![npm](https://img.shields.io/npm/dt/@codetrix-studio/capacitor-google-auth)
+![npm](https://img.shields.io/npm/dw/@codetrix-studio/capacitor-google-auth)
+![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/npm/@codetrix-studio/capacitor-google-auth)
+[![install size](https://packagephobia.com/badge?p=@codetrix-studio/capacitor-google-auth)](https://packagephobia.com/result?p=@codetrix-studio/capacitor-google-auth)
+
 Capacitor plugin for Google Auth.
 
 ## Contributions
