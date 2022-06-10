@@ -2,7 +2,7 @@
 
 ### Fixes
 
-- **Web**: discontinuing authorization support for the Google Sign-In JavaScript Platform Library [#208](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/208) ([c9fca36](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/c9fca36)), fixes [#202](https://github.com/CodetrixStudio/CapacitorGoogleAuth/issues/202)
+- **Web**: discontinuing authorization support for the Google Sign-In JavaScript Platform Library [#208](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/208) ([c9fca36](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/c9fca36)), from [#202](https://github.com/CodetrixStudio/CapacitorGoogleAuth/issues/202)
 
 # [3.1.3](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.1.0...v3.1.3) (2022-04-03)
 
