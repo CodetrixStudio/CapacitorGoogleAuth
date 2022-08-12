@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.google.gms:google-services:4.3.13'
     }
 }
 
@@ -13,7 +14,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 32
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -27,6 +28,10 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_11
     }
 }
 

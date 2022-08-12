@@ -1,3 +1,5 @@
+require_relative '../../node_modules/@capacitor/ios/scripts/pods_helpers'
+
 platform :ios, '13.0'
 
 target 'Plugin' do
@@ -14,4 +16,8 @@ target 'PluginTests' do
   use_frameworks!
 
   pod 'Capacitor', :path => '../node_modules/@capacitor/ios'
+end
+
+post_install do |installer|
+  assertDeploymentTarget(installer)
 end
