@@ -1,6 +1,5 @@
 # CapacitorGoogleAuth
 
-
 [![npm](https://img.shields.io/npm/v/@codetrix-studio/capacitor-google-auth)](https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth)
 ![npm](https://img.shields.io/npm/dt/@codetrix-studio/capacitor-google-auth)
 ![npm](https://img.shields.io/npm/dw/@codetrix-studio/capacitor-google-auth)
@@ -23,11 +22,8 @@ PRs for features that are not aligned with the official Google Auth library are 
 
 #### 1. Install package
 
-```bash
+```sh
 npm i --save @codetrix-studio/capacitor-google-auth
-
-# or for Capacitor 2.x.x
-npm i --save @codetrix-studio/capacitor-google-auth@2.1.3
 ```
 
 #### 2. Update capacitor deps
@@ -36,13 +32,11 @@ npm i --save @codetrix-studio/capacitor-google-auth@2.1.3
 npx cap update
 ```
 
-#### 3. Migrate from 2 to 3 version
+## Updating
 
-if your migrate from Capacitor 2 to Capacitor 3 [see instruction for migrate plugin to new version](#migrate-from-2-to-3)
+If need migrate to different Capacitor versions [see instruction for migrate plugin to new version](#migration-guide).
 
 ## Usage
-
-for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/CapacitorGoogleAuth/blob/79129ab37288f5f5d0bb9a568a95890e852cebc2/README.md)
 
 ### WEB
 
@@ -59,7 +53,7 @@ GoogleAuth.initialize({
 });
 ```
 
-or if need use meta tags
+or if need use meta tags (Optional):
 
 ```html
 <meta name="google-signin-client_id" content="{your client id here}" />
@@ -183,14 +177,13 @@ this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 ## Configure
 
 | Name                     | Type     | Description                                                                                                                   |
-|--------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | clientId                 | string   | The app's client ID, found and created in the Google Developers Console.                                                      |
 | iosClientId              | string   | Specific client ID key for iOS                                                                                                |
 | androidClientId          | string   | Specific client ID key for Android                                                                                            |
 | scopes                   | string[] | Scopes that you might need to request to access Google APIs<br>https://developers.google.com/identity/protocols/oauth2/scopes |
 | serverClientId           | string   | This ClientId used for offline access and server side handling                                                                |
 | forceCodeForRefreshToken | boolean  | Force user to select email address to regenerate AuthCode <br>used to get a valid refreshtoken (work on iOS and Android)      |
-
 
 Provide configuration in root `capacitor.config.json`
 
@@ -226,6 +219,16 @@ export default config;
 
 ## Migration guide
 
+#### Migrate from 3.1.x to 3.2.x
+
+Install version 3.2.x:
+
+```sh
+npm i --save @codetrix-studio/capacitor-google-auth
+```
+
+Follow instruction for you project [Updating from Capacitor 3 to Capacitor 4](https://capacitorjs.com/docs/updating/4-0).
+
 #### Migrate from 3.0.2 to 3.1.0
 
 ```diff
@@ -234,6 +237,12 @@ export default config;
 ```
 
 #### Migrate from 2 to 3
+
+Install version 3.x.x:
+
+```sh
+npm i --save @codetrix-studio/capacitor-google-auth@3
+```
 
 After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
 
@@ -248,3 +257,17 @@ After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updatin
 + GoogleAuth.init()
 + GoogleAuth.signIn()
 ```
+
+#### Migrate from 1 to 2
+
+Install version 2.x.x:
+
+```sh
+npm i --save @codetrix-studio/capacitor-google-auth@2
+```
+
+for capacitor 2.x.x use [instruction](https://github.com/CodetrixStudio/CapacitorGoogleAuth/blob/79129ab37288f5f5d0bb9a568a95890e852cebc2/README.md)
+
+## License
+
+[MIT](./LICENSE)
