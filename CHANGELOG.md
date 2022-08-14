@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.1.3...v3.2.0) (2022-08-15)
+
+### Features
+
+- Support Capacitor 4 [#218](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/218) ([0a1f4ff](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/0a1f4ff)) - **BREAKING CHANGE!**
+
+### Docs
+- Migration guide to capacitor 4 [#221](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/221) ([1a79a88](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/1a79a88))
+
 # [3.1.4](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.1.3...v3.1.4) (2022-06-10)
 
 ### Fixes
