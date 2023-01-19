@@ -1,3 +1,9 @@
+# [3.2.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.2.0...v3.2.1) (2023-01-19)
+
+### Fixes
+
+- sign issue by update google sign dep [#251](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/251) ([fc0142a](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/fc0142a)) [@riderx](https://github.com/riderx)
+
 # [3.2.0](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.1.3...v3.2.0) (2022-08-15)
 
 ### Features
