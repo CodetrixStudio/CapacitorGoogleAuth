@@ -135,7 +135,22 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void refresh(final PluginCall call) {
-    call.reject("I don't know how to refresh token on Android");
+    Task<GoogleSignInAccount> task = googleSignInClient.silentSignIn();
+    if (task.isSuccessful()) {
+      extractUserFromAccount(task.getResult(), call);
+    }
+    task.addOnCompleteListener(task1 -> {
+      try {
+        extractUserFromAccount(task1.getResult(ApiException.class), call);
+      } catch (ApiException e) {
+        // You can get from apiException.getStatusCode() the detailed error code
+        // e.g. GoogleSignInStatusCodes.SIGN_IN_REQUIRED means user needs to take
+        // explicit action to finish sign-in;
+        // Please refer to GoogleSignInStatusCodes Javadoc for details
+        e.printStackTrace();
+        call.reject("Something went wrong with silent sign in", e);
+      }
+    });
   }
 
   @PluginMethod()
