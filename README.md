@@ -169,7 +169,7 @@ import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 Register plugin inside your `MainActivity.onCreate`
 
 ```java
-this.bridgeBuilder.addPlugin(GoogleAuth.class);
+this.registerPlugin(GoogleAuth.class);
 ```
 
 ## Configure
