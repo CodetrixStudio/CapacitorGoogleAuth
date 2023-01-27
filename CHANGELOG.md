@@ -1,3 +1,9 @@
+# [3.2.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.2.1...3.2.2) (2023-01-27)
+
+### Docs
+* Update android plugin instructions by [@teaqu](https://github.com/teaqu) in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/254
+
+
 # [3.2.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.2.0...v3.2.1) (2023-01-19)
 
 ### Fixes
