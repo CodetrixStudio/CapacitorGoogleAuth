@@ -217,6 +217,17 @@ export default config;
 
 ## Migration guide
 
+#### Migrate from 3.2.1 to 3.2.2
+
+for `Android` in file `MainActivity.onCreate`
+
+```diff 
+- this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
+-   add(GoogleAuth.class);
+- }});
++ this.registerPlugin(GoogleAuth.class);
+```
+
 #### Migrate from 3.1.x to 3.2.x
 
 Install version 3.2.x:
