@@ -120,6 +120,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     user.givenName = jwtPaylod.given_name as string;
     user.id =  jwtPaylod.sub as string;
     user.imageUrl = jwtPaylod.picture as string;
+    user.name = jwtPaylod.name as string;
 
     // Todo: also deprecated ?
     user.authentication = {
