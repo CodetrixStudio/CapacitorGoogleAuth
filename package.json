@@ -9,7 +9,8 @@
     "clean": "rm -rf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "prettier": "prettier -w src/*"
   },
   "author": "CodetrixStudio",
   "license": "MIT",

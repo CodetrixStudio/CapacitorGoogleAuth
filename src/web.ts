@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
-import {Authentication, GoogleAuthPlugin, InitOptions, User} from './definitions';
-import {decodeJwt} from 'jose'
-import {JWTPayload} from "jose";
+import { Authentication, GoogleAuthPlugin, InitOptions, User } from './definitions';
+import { decodeJwt } from 'jose';
+import { JWTPayload } from 'jose';
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
@@ -69,7 +69,6 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
   }
 
-
   async signIn(): Promise<User> {
     return new Promise<User>(async (resolve, reject) => {
       try {
@@ -79,19 +78,18 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
             const jwtPayload = decodeJwt(response.credential);
             const user = this.getUserFrom(jwtPayload);
             resolve(user);
-          }
+          },
         });
 
         // Request for popup to open
         google.accounts.id.prompt((notification) => {
-              if (notification.isNotDisplayed()) {
-                reject({message: 'Not Displayed'});
-              }
-              if (notification.isSkippedMoment()) {
-                reject({message: 'Skipped'});
-              }
-            }
-        );
+          if (notification.isNotDisplayed()) {
+            reject({ message: 'Not Displayed' });
+          }
+          if (notification.isSkippedMoment()) {
+            reject({ message: 'Skipped' });
+          }
+        });
       } catch (error) {
         reject(error);
       }
@@ -118,7 +116,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     user.email = jwtPaylod.email as string;
     user.familyName = jwtPaylod.family_name as string;
     user.givenName = jwtPaylod.given_name as string;
-    user.id =  jwtPaylod.sub as string;
+    user.id = jwtPaylod.sub as string;
     user.imageUrl = jwtPaylod.picture as string;
     user.name = jwtPaylod.name as string;
 
