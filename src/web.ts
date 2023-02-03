@@ -78,7 +78,6 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
           callback: (response: google.accounts.id.CredentialResponse) => {
             const jwtPayload = decodeJwt(response.credential);
             const user = this.getUserFrom(jwtPayload);
-
             resolve(user);
           }
         });
@@ -91,7 +90,6 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
               if (notification.isSkippedMoment()) {
                 reject({message: 'Skipped'});
               }
-
             }
         );
       } catch (error) {
@@ -122,9 +120,8 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     user.givenName = jwtPaylod.given_name as string;
     user.id =  jwtPaylod.sub as string;
     user.imageUrl = jwtPaylod.picture as string;
-    user.imageUrl = jwtPaylod.name as string;
 
-    // const authResponse = googleUser.getAuthResponse(true);
+    // Todo: also deprecated ?
     user.authentication = {
       accessToken: '', // was authResponse.access_token
       idToken: '', // was authResponse.id_token
