@@ -1,5 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
-import { GoogleAuthPlugin, InitOptions, User } from './definitions';
+import {Authentication, GoogleAuthPlugin, InitOptions, User} from './definitions';
+import {decodeJwt} from 'jose'
+import {JWTPayload} from "jose";
 
 export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
   gapiLoaded: Promise<void>;
@@ -28,16 +30,15 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     script.defer = true;
     script.async = true;
     script.id = scriptId;
-    script.onload = this.platformJsLoaded.bind(this);
-    script.src = 'https://apis.google.com/js/platform.js';
+    script.src = 'https://accounts.google.com/gsi/client';
     head.appendChild(script);
   }
 
   initialize(
     _options: Partial<InitOptions> = {
       clientId: '',
-      scopes: [],
-      grantOfflineAccess: false,
+      scopes: [], // Deprecated
+      grantOfflineAccess: false, // Deprecated
     }
   ) {
     if (typeof window === 'undefined') {
@@ -57,96 +58,76 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       scopes: _options.scopes || [],
     };
 
+    if (this.options.grantOfflineAccess) {
+      console.warn('GoogleAuthPlugin - grantOfflineAccess true is deprecated');
+    }
+
     this.gapiLoaded = new Promise((resolve) => {
       // HACK: Relying on window object, can't get property in gapi.load callback
       (window as any).gapiResolve = resolve;
       this.loadScript();
     });
-
-    this.addUserChangeListener();
   }
 
-  platformJsLoaded() {
-    gapi.load('auth2', () => {
-      // https://github.com/CodetrixStudio/CapacitorGoogleAuth/issues/202#issuecomment-1147393785
-      const clientConfig: gapi.auth2.ClientConfig & { plugin_name: string } = {
-        client_id: this.options.clientId,
-        plugin_name: 'CodetrixStudioCapacitorGoogleAuth',
-      };
 
-      if (this.options.scopes.length) {
-        clientConfig.scope = this.options.scopes.join(' ');
-      }
-
-      gapi.auth2.init(clientConfig);
-      (window as any).gapiResolve();
-    });
-  }
-
-  async signIn() {
+  async signIn(): Promise<User> {
     return new Promise<User>(async (resolve, reject) => {
       try {
-        let serverAuthCode: string;
-        const needsOfflineAccess = this.options.grantOfflineAccess ?? false;
+        google.accounts.id.initialize({
+          client_id: this.options.clientId,
+          callback: (response: google.accounts.id.CredentialResponse) => {
+            const jwtPayload = decodeJwt(response.credential);
+            const user = this.getUserFrom(jwtPayload);
 
-        if (needsOfflineAccess) {
-          const offlineAccessResponse = await gapi.auth2.getAuthInstance().grantOfflineAccess();
-          serverAuthCode = offlineAccessResponse.code;
-        } else {
-          await gapi.auth2.getAuthInstance().signIn();
-        }
+            resolve(user);
+          }
+        });
 
-        const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+        // Request for popup to open
+        google.accounts.id.prompt((notification) => {
+              if (notification.isNotDisplayed()) {
+                reject({message: 'Not Displayed'});
+              }
+              if (notification.isSkippedMoment()) {
+                reject({message: 'Skipped'});
+              }
 
-        if (needsOfflineAccess) {
-          // HACK: AuthResponse is null if we don't do this when using grantOfflineAccess
-          await googleUser.reloadAuthResponse();
-        }
-
-        const user = this.getUserFrom(googleUser);
-        user.serverAuthCode = serverAuthCode;
-        resolve(user);
+            }
+        );
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  async refresh() {
-    const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
+  async refresh(): Promise<Authentication> {
+    // Doesn't look to be used with GIS
     return {
-      accessToken: authResponse.access_token,
-      idToken: authResponse.id_token,
+      accessToken: '',
+      idToken: '',
       refreshToken: '',
     };
   }
 
-  async signOut() {
-    return gapi.auth2.getAuthInstance().signOut();
+  async signOut(): Promise<any> {
+    // Doesn't look to be used with GIS
+    return new Promise(null);
   }
 
-  private async addUserChangeListener() {
-    await this.gapiLoaded;
-    gapi.auth2.getAuthInstance().currentUser.listen((googleUser) => {
-      this.notifyListeners('userChange', googleUser.isSignedIn() ? this.getUserFrom(googleUser) : null);
-    });
-  }
-
-  private getUserFrom(googleUser: gapi.auth2.GoogleUser) {
+  private getUserFrom(jwtPaylod: JWTPayload) {
     const user = {} as User;
-    const profile = googleUser.getBasicProfile();
 
-    user.email = profile.getEmail();
-    user.familyName = profile.getFamilyName();
-    user.givenName = profile.getGivenName();
-    user.id = profile.getId();
-    user.imageUrl = profile.getImageUrl();
-    user.name = profile.getName();
+    user.email = jwtPaylod.email as string;
+    user.familyName = jwtPaylod.family_name as string;
+    user.givenName = jwtPaylod.given_name as string;
+    user.id =  jwtPaylod.sub as string;
+    user.imageUrl = jwtPaylod.picture as string;
+    user.imageUrl = jwtPaylod.name as string;
 
-    const authResponse = googleUser.getAuthResponse(true);
+    // const authResponse = googleUser.getAuthResponse(true);
     user.authentication = {
-      accessToken: authResponse.access_token,
-      idToken: authResponse.id_token,
+      accessToken: '', // was authResponse.access_token
+      idToken: '', // was authResponse.id_token
       refreshToken: '',
     };
 
