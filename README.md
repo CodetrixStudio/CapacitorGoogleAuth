@@ -160,18 +160,6 @@ plugin first use `androidClientId` if not found use `clientId` if not found use 
 </resources>
 ```
 
-Import package inside your `MainActivity`
-
-```java
-import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
-```
-
-Register plugin inside your `MainActivity.onCreate`
-
-```java
-this.registerPlugin(GoogleAuth.class);
-```
-
 ## Configure
 
 | Name                     | Type     | Description                                                                                                                   |
