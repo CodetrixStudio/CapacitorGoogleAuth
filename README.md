@@ -72,7 +72,7 @@ Use it
 GoogleAuth.signIn();
 ```
 
-#### AngularFire2
+#### Angular
 
 init hook
 
@@ -101,27 +101,20 @@ async googleSignIn() {
 
 #### Vue 3
 
-```ts
-// App.vue
-import { defineComponent, onMounted } from 'vue';
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+```vue
+<script setup lang="ts"> 
+import { defineComponent, onMounted } from 'vue'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
-export default defineComponent({
-  setup() {
-    onMounted(() => {
-      GoogleAuth.initialize();
-    });
+onMounted(() => {
+  GoogleAuth.initialize();
+})
 
-    const logIn = async () => {
-      const response = await GoogleAuth.signIn();
-      console.log(response);
-    };
-
-    return {
-      logIn,
-    };
-  },
-});
+async function logIn() {
+  const response = await GoogleAuth.signIn();
+  console.log(response);
+}
+</script>
 ```
 
 or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/CapacitorGoogleAuth-Vue3-example)
