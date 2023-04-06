@@ -38,7 +38,7 @@ If need migrate to different Capacitor versions [see instruction for migrate plu
 
 ## Usage
 
-### WEB
+### ALL PLATFORMS
 
 Register plugin and manually initialize
 
@@ -53,7 +53,12 @@ GoogleAuth.initialize({
 });
 ```
 
-or if need use meta tags (Optional):
+**_NOTE:_** The custom paramters in the initialize function only applies to Android and iOS platform after version {{ version number here }}. This only applies to the Web platform before verion {{ version number here }}.
+
+### WEB
+
+
+if need use meta tags (Optional):
 
 ```html
 <meta name="google-signin-client_id" content="{your client id here}" />
