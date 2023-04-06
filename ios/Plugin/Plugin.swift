@@ -14,36 +14,54 @@ public class GoogleAuth: CAPPlugin {
     var forceAuthCode: Bool = false;
     var additionalScopes: [String]!;
 
-    
-    public override func load() {
+    func loadSignInClient (
+        customClientId: String,
+        customScopes: [String]
+    ) {
         googleSignIn = GIDSignIn.sharedInstance;
         
         let serverClientId = getServerClientIdValue();
-        
-        guard let clientId = getClientIdValue() else {
-            NSLog("no client id found in config")
-            return;
-        }
 
-        googleSignInConfiguration = GIDConfiguration.init(clientID: clientId, serverClientID: serverClientId)
+        googleSignInConfiguration = GIDConfiguration.init(clientID: customClientId, serverClientID: serverClientId)
         
         // these are scopes granted by default by the signIn method
         let defaultGrantedScopes = ["email", "profile", "openid"];
-
         // these are scopes we will need to request after sign in
-        additionalScopes = (getConfigValue("scopes") as? [String] ?? []).filter {
+        additionalScopes = customScopes.filter {
             return !defaultGrantedScopes.contains($0);
         };
-                
-        if let forceAuthCodeConfig = getConfigValue("forceCodeForRefreshToken") as? Bool {
-            forceAuthCode = forceAuthCodeConfig;
-        }
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleOpenUrl(_ :)), name: Notification.Name(Notification.Name.capacitorOpenURL.rawValue), object: nil);
     }
 
+    
+    public override func load() {
+    }
+
     @objc
     func initialize(_ call: CAPPluginCall) {
+        // get client id from initialize, with client id from config file as fallback
+        guard let clientId = call.getString("clientId") ?? getClientIdValue() as? String else {
+            NSLog("no client id found in config");
+            call.resolve();
+            return;
+        }
+
+        // get scopes from initialize, with scopes from config file as fallback
+        let customScopes = call.getArray("scopes", String.self) ?? (
+            getConfigValue("scopes") as? [String] ?? []
+        );
+
+        // get force auth code from initialize, with config from config file as fallback
+        forceAuthCode = call.getBool("grantOfflineAccess") ?? (
+            getConfigValue("forceCodeForRefreshToken") as? Bool ?? false
+        );
+        
+        // load client
+        self.loadSignInClient(
+            customClientId: clientId,
+            customScopes: customScopes
+        )
         call.resolve();
     }
 
