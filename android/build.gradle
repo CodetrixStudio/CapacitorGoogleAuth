@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
+    namespace "com.codetrixstudio.capacitor.GoogleAuth.capacitorgoogleauth"
     compileSdkVersion 32
     defaultConfig {
         minSdkVersion 22
