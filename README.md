@@ -1,12 +1,14 @@
-# CapacitorGoogleAuth
-
-[![npm](https://img.shields.io/npm/v/@codetrix-studio/capacitor-google-auth)](https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth)
-![npm](https://img.shields.io/npm/dt/@codetrix-studio/capacitor-google-auth)
-![npm](https://img.shields.io/npm/dw/@codetrix-studio/capacitor-google-auth)
-![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/npm/@codetrix-studio/capacitor-google-auth)
-[![install size](https://packagephobia.com/badge?p=@codetrix-studio/capacitor-google-auth)](https://packagephobia.com/result?p=@codetrix-studio/capacitor-google-auth)
-
+<h1 align="center">CapacitorGoogleAuth</h1>
+<p align="center"><strong><code>@codetrix-studio/capacitor-google-auth</code></strong></p>
+<br>
+<p align="center"><strong>CAPACITOR 5</strong></p>
+<p align="center">
 Capacitor plugin for Google Auth.
+</p>
+<br>
+<p align="center">
+<a href="https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth"><img alt="npm" src="https://img.shields.io/npm/v/@codetrix-studio/capacitor-google-auth"></a> <a href="https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth"><img alt="npm" src="https://img.shields.io/npm/dt/@codetrix-studio/capacitor-google-auth"></a> <a href="https://www.npmjs.com/package/@codetrix-studio/capacitor-google-auth"><img alt="npm" src="https://img.shields.io/npm/dw/@codetrix-studio/capacitor-google-auth"></a> <a href="https://libraries.io/npm/@codetrix-studio%2Fcapacitor-google-auth"><img alt="Dependents (via libraries.io)" src="https://img.shields.io/librariesio/dependents/npm/@codetrix-studio/capacitor-google-auth"></a> <a href="https://packagephobia.com/result?p=@codetrix-studio/capacitor-google-auth"><img alt="install size" src="https://packagephobia.com/badge?p=@codetrix-studio/capacitor-google-auth"></a>
+</p>
 
 ## Contributions
 
@@ -102,13 +104,13 @@ async googleSignIn() {
 #### Vue 3
 
 ```vue
-<script setup lang="ts"> 
-import { defineComponent, onMounted } from 'vue'
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+<script setup lang="ts">
+import { defineComponent, onMounted } from 'vue';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 onMounted(() => {
   GoogleAuth.initialize();
-})
+});
 
 async function logIn() {
   const response = await GoogleAuth.signIn();
@@ -198,11 +200,21 @@ export default config;
 
 ## Migration guide
 
+#### Migrate from 3.2.x to 3.3.x
+
+Install version 3.3.x:
+
+```sh
+npm i --save @codetrix-studio/capacitor-google-auth^3.3
+```
+
+Follow instruction for you project [Updating from Capacitor 4 to Capacitor 5](https://capacitorjs.com/docs/updating/5-0).
+
 #### Migrate from 3.2.1 to 3.2.2
 
 for `Android` in file `MainActivity.onCreate`
 
-```diff 
+```diff
 - this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
 -   add(GoogleAuth.class);
 - }});
@@ -214,7 +226,7 @@ for `Android` in file `MainActivity.onCreate`
 Install version 3.2.x:
 
 ```sh
-npm i --save @codetrix-studio/capacitor-google-auth
+npm i --save @codetrix-studio/capacitor-google-auth^3.2
 ```
 
 Follow instruction for you project [Updating from Capacitor 3 to Capacitor 4](https://capacitorjs.com/docs/updating/4-0).
@@ -231,7 +243,7 @@ Follow instruction for you project [Updating from Capacitor 3 to Capacitor 4](ht
 Install version 3.x.x:
 
 ```sh
-npm i --save @codetrix-studio/capacitor-google-auth@3
+npm i --save @codetrix-studio/capacitor-google-auth^3.0
 ```
 
 After [migrate to Capcitor 3](https://capacitorjs.com/docs/updating/3-0) updating you projects, see diff:
