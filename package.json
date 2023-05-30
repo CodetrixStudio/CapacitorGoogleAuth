@@ -9,7 +9,8 @@
     "clean": "rm -rf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "test": "echo \"no test specified\""
   },
   "author": "CodetrixStudio",
   "license": "MIT",
