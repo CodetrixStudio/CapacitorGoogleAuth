@@ -1,3 +1,8 @@
+# [3.3.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.0...3.3.1) (2023-05-31)
+
+## What's Changed
+* fix plugin-migration-v4-to-v5​ by @KerimM in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/284
+
 # [3.3.0](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.2.2...3.3.0) (2023-05-30)
 
 ### Features
