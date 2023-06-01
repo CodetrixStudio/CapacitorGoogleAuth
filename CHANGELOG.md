@@ -1,3 +1,8 @@
+# [3.3.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.1...3.3.2) (2023-06-01)
+
+## What's Changed
+* Fix peerDependencies for capacitor migration tool by @KerimM in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/285
+
 # [3.3.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.0...3.3.1) (2023-05-31)
 
 ## What's Changed
