@@ -1,6 +1,6 @@
 {
   "name": "@codetrix-studio/capacitor-google-auth",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "Google Auth plugin for capacitor.",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -26,7 +26,7 @@
     "typescript": "^4.7.4"
   },
   "peerDependencies": {
-    "@capacitor/core": "^5.0.4"
+    "@capacitor/core": "^5.0.0"
   },
   "files": [
     "dist/",
@@ -56,10 +56,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CodetrixStudio/CapacitorGoogleAuth.git"
+    "url": "https://github.com/CodetrixStudio/CapacitorGoogleAuth"
   },
   "bugs": {
-    "url": "https://github.com/CodetrixStudio/CapacitorGoogleAuth.git/issues"
+    "url": "https://github.com/CodetrixStudio/CapacitorGoogleAuth/issues"
   },
   "prettier": "@ionic/prettier-config"
 }
