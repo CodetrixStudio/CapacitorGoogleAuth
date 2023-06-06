@@ -1,8 +1,24 @@
+# [3.3.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.1...3.3.2) (2023-06-01)
+
+## What's Changed
+* Fix peerDependencies for capacitor migration tool by @KerimM in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/285
+
+# [3.3.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.0...3.3.1) (2023-05-31)
+
+## What's Changed
+* fix plugin-migration-v4-to-v5​ by @KerimM in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/284
+
+# [3.3.0](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.2.2...3.3.0) (2023-05-30)
+
+### Features
+
+- Upgrade to Capacitor 5 [@tponte](https://github.com/tponte) in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/277
+
 # [3.2.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.2.1...3.2.2) (2023-01-27)
 
 ### Docs
-* Update android plugin instructions by [@teaqu](https://github.com/teaqu) in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/254
 
+- Update android plugin instructions by [@teaqu](https://github.com/teaqu) in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/254
 
 # [3.2.1](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.2.0...v3.2.1) (2023-01-19)
 
@@ -17,6 +33,7 @@
 - Support Capacitor 4 [#218](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/218) ([0a1f4ff](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/0a1f4ff)) - **BREAKING CHANGE!**
 
 ### Docs
+
 - Migration guide to capacitor 4 [#221](https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/221) ([1a79a88](https://github.com/CodetrixStudio/CapacitorGoogleAuth/commit/1a79a88))
 
 # [3.1.4](https://github.com/CodetrixStudio/CapacitorGoogleAuth/v3.1.3...v3.1.4) (2022-06-10)
