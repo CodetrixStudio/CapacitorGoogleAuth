@@ -63,7 +63,6 @@ public class GoogleAuth extends Plugin {
 
     GoogleSignInOptions.Builder googleSignInBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(clientId)
-            .requestServerAuthCode(clientId)
             .requestEmail();
 
     if (forceCodeForRefreshToken) {
