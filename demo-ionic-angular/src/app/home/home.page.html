@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Capacitor Google Auth App
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col offset="2" size="8">
+        <ion-button color="primary" expand="block" (click)="signIn()">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          Sign In with Google Auth
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col offset="2" size="8">
+        <ion-button color="danger" expand="block" (click)="signOut()">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          Sign Out with Google Auth
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
