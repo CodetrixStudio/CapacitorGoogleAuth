@@ -36,6 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnFailureListener;
 
 @CapacitorPlugin()
 public class GoogleAuth extends Plugin {
@@ -140,8 +142,19 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void signOut(final PluginCall call) {
-    googleSignInClient.signOut();
-    call.resolve();
+    googleSignInClient.signOut()
+      .addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
+        @Override
+          public void onSuccess(Void aVoid) {
+            call.resolve();
+          }
+      })
+      .addOnFailureListener(getActivity(), new OnFailureListener() {
+        @Override
+          public void onFailure(Exception e) {
+            call.reject("Sign out failed", e);
+          }
+      });
   }
 
   @PluginMethod()
