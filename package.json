@@ -32,6 +32,8 @@
     "dist/",
     "ios/",
     "android/",
+    "!android/src/androidTest",
+    "!android/src/test",
     "CodetrixStudioCapacitorGoogleAuth.podspec"
   ],
   "keywords": [
