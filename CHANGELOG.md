@@ -1,3 +1,10 @@
+# [3.3.3](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.2...3.3.3) (2023-10-09)
+
+## What's Changed
+* Demo Ionic Angular by @razmans in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/290
+* Fix #272, #55 by @mirko77 in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/288
+* Port android test stubs to capacitor 5, and exclude them from npm package by @adamschoenemann in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/307
+
 # [3.3.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.1...3.3.2) (2023-06-01)
 
 ## What's Changed
