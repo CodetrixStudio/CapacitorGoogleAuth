@@ -1,6 +1,6 @@
 {
   "name": "@codetrix-studio/capacitor-google-auth",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "Google Auth plugin for capacitor.",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
