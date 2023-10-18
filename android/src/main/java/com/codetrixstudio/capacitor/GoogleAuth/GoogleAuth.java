@@ -136,16 +136,23 @@ public class GoogleAuth extends Plugin {
   }
 
   @PluginMethod()
-  public void refresh(PluginCall call) {
+  public void refresh(final PluginCall call) {
     GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
     if (account == null) {
       call.reject("User not logged in.");
     } else {
-      JSObject authData = new JSObject();
-      authData.put("accessToken", account.getServerAuthCode());
-      authData.put("idToken", account.getIdToken());
-      authData.put("refreshToken", "");
-      call.resolve(authData);
+      try {
+        JSONObject accessTokenObject = getAuthToken(account.getAccount(), true);
+
+        JSObject authentication = new JSObject();
+        authentication.put("idToken", account.getIdToken());
+        authentication.put(FIELD_ACCESS_TOKEN, accessTokenObject.get(FIELD_ACCESS_TOKEN));
+        authentication.put("refreshToken", "");
+        call.resolve(authentication);
+      } catch(Exception e){
+        e.printStackTrace();
+        call.reject("Something went wrong while retrieving access token", e);
+      }
     }
   }
 
