@@ -137,7 +137,23 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void refresh(final PluginCall call) {
-    call.reject("I don't know how to refresh token on Android");
+    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
+    if (account == null) {
+      call.reject("User not logged in.");
+    } else {
+      try {
+        JSONObject accessTokenObject = getAuthToken(account.getAccount(), true);
+
+        JSObject authentication = new JSObject();
+        authentication.put("idToken", account.getIdToken());
+        authentication.put(FIELD_ACCESS_TOKEN, accessTokenObject.get(FIELD_ACCESS_TOKEN));
+        authentication.put("refreshToken", "");
+        call.resolve(authentication);
+      } catch(Exception e){
+        e.printStackTrace();
+        call.reject("Something went wrong while retrieving access token", e);
+      }
+    }
   }
 
   @PluginMethod()
