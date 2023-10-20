@@ -1,3 +1,8 @@
+# [3.3.4](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.3...3.3.4) (2023-10-20)
+
+## What's Changed
+* Android refresh method by @CaolanCode in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/314
+
 # [3.3.3](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.2...3.3.3) (2023-10-09)
 
 ## What's Changed
