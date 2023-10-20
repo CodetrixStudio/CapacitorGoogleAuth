@@ -154,6 +154,25 @@ plugin first use `androidClientId` if not found use `clientId` if not found use 
 </resources>
 ```
 
+**Refresh Method**
+This method should be called when the app is initialized to establish if the user is currently logged in. If true, the method will return an accessToken, idToken and an empty refreshToken.
+Example below:
+```ts
+checkLoggedIn() {
+    GoogleAuth.refresh()
+        .then((data) => {
+            if (data.accessToken) {
+                this.currentTokens = data;
+            }
+        })
+        .catch((error) => {
+            if (error.type === 'userLoggedOut') {
+                this.signin()
+            }
+        });
+}
+```
+
 ## Configure
 
 | Name                     | Type     | Description                                                                                                                   |
