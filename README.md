@@ -25,6 +25,12 @@ PRs for features that are not aligned with the official Google Auth library are 
 
 ```sh
 npm i --save @codetrix-studio/capacitor-google-auth
+
+# pnpm 
+pnpm add @codetrix-studio/capacitor-google-auth
+
+# yarn 
+yarn add @codetrix-studio/capacitor-google-auth
 ```
 
 #### 2. Update capacitor deps

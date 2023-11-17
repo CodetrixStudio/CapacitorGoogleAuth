@@ -1,3 +1,9 @@
+# [3.3.5](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.4...3.3.5) (2023-11-17)
+
+## What's Changed
+* Update README.md by @Martin-Eckleben in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/323
+* Bump ios GoogleSignIn to 6.2.4 (Allows requesting scopes during initial signIn) by @Endrzei in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/321
+
 # [3.3.4](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.3...3.3.4) (2023-10-20)
 
 ## What's Changed
