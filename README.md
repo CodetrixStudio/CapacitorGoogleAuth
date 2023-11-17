@@ -95,6 +95,10 @@ sign in function
 ```ts
 async googleSignIn() {
   let googleUser = await GoogleAuth.signIn();
+
+  /*
+    If you use Firebase you can forward and use the logged in Google user like this:
+  */
   const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
   return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
 }
