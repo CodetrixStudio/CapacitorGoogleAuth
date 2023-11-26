@@ -226,6 +226,11 @@ const config: CapacitorConfig = {
 export default config;
 ```
 
+## API
+
+<docgen-index></docgen-index>
+<docgen-api></docgen-api>
+
 ## Migration guide
 
 #### Migrate from 3.2.x to 3.3.x
