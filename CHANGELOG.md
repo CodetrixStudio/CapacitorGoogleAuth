@@ -1,3 +1,12 @@
+
+# [3.3.6](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.5...3.3.6) (2023-11-26)
+
+## What's Changed
+* refactor: deprecate `displayName`, use `name` property (Android) by @itsLucario in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/326
+* chore: integrate docgen by @reslear in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/327
+
+**Full Changelog**: https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.5...3.3.6
+
 # [3.3.5](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.4...3.3.5) (2023-11-17)
 
 ## What's Changed
