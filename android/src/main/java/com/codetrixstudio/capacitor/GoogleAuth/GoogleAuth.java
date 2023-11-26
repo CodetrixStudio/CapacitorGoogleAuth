@@ -113,6 +113,8 @@ public class GoogleAuth extends Plugin {
           user.put("idToken", account.getIdToken());
           user.put("authentication", authentication);
 
+          user.put("name", account.getDisplayName());
+          // Deprecated: Use `user` instead of `displayName`
           user.put("displayName", account.getDisplayName());
           user.put("email", account.getEmail());
           user.put("familyName", account.getFamilyName());
