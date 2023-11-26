@@ -9,8 +9,11 @@ declare module '@capacitor/cli' {
 export interface User {
   id: string;
   email: string;
-
-  displayName: string;
+  /**
+   * @deprecated use `name` instead
+   */
+  displayName: string
+  name: string;
   familyName: string;
   givenName: string;
   imageUrl: string;
