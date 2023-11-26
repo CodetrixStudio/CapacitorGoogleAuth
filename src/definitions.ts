@@ -18,12 +18,6 @@ export interface User {
   email: string;
 
   /**
-   * The user's full name on the Android platform.
-   * @deprecated Use `name` instead. Will be removed in next major version.
-   */
-  displayName: string;
-
-  /**
    * The user's full name.
    */
   name: string;
