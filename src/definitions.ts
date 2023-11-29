@@ -143,7 +143,7 @@ export interface GoogleAuthPlugin {
    * @param options - Optional initialization options.
    * @since 3.1.0
    */
-  initialize(options?: InitOptions): void;
+  initialize(options?: InitOptions): Promise<void>;
 
   /**
    * Initiates the sign-in process and returns a Promise that resolves with the user information.
