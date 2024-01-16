@@ -7,31 +7,68 @@ declare module '@capacitor/cli' {
 }
 
 export interface User {
+  /**
+   * The unique identifier for the user.
+   */
   id: string;
+
+  /**
+   * The email address associated with the user.
+   */
   email: string;
 
+  /**
+   * The user's full name.
+   */
   name: string;
+
+  /**
+   * The family name (last name) of the user.
+   */
   familyName: string;
+
+  /**
+   * The given name (first name) of the user.
+   */
   givenName: string;
+
+  /**
+   * The URL of the user's profile picture.
+   */
   imageUrl: string;
 
+  /**
+   * The server authentication code.
+   */
   serverAuthCode: string;
+
+  /**
+   * The authentication details including access, refresh and ID tokens.
+   */
   authentication: Authentication;
 }
 
 export interface Authentication {
+  /**
+   * The access token obtained during authentication.
+   */
   accessToken: string;
+
+  /**
+   * The ID token obtained during authentication.
+   */
   idToken: string;
 
   /**
-   * refreshToken only for iOS and Android
+   * The refresh token.
+   * @warning This property is applicable only for mobile platforms (iOS and Android).
    */
   refreshToken?: string;
 }
 
 export interface GoogleAuthPluginOptions {
   /**
-   * The app's client ID, found and created in the Google Developers Console.
+   * The default app's client ID, found and created in the Google Developers Console.
    * common for Android or iOS
    * @example xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
    * @since 3.1.0
@@ -51,10 +88,10 @@ export interface GoogleAuthPluginOptions {
   androidClientId?: string;
 
   /**
-   * Scopes that you might need to request to access Google APIs
+   * Specifies the default scopes required for accessing Google APIs.
    * @example ["profile", "email"]
-   * @default []
-   * @see @link https://developers.google.com/identity/protocols/oauth2/scopes
+   * @default ["email", "profile", "openid"]
+   * @see [Google OAuth2 Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)
    */
   scopes?: string[];
 
@@ -72,7 +109,24 @@ export interface GoogleAuthPluginOptions {
   forceCodeForRefreshToken?: boolean;
 }
 
-export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes' | 'clientId'> {
+export interface InitOptions {
+  /**
+   * The app's client ID, found and created in the Google Developers Console.
+   * Common for Android or iOS.
+   * The default is defined in the configuration.
+   * @example xxxxxx-xxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+   * @since 3.1.0
+   */
+  clientId?: string;
+
+  /**
+   * Specifies the scopes required for accessing Google APIs
+   * The default is defined in the configuration.
+   * @example ["profile", "email"]
+   * @see [Google OAuth2 Scopes](https://developers.google.com/identity/protocols/oauth2/scopes)
+   */
+  scopes?: string[];
+
   /**
    * Set if your application needs to refresh access tokens when the user is not present at the browser.
    * In response use `serverAuthCode` key
@@ -80,17 +134,29 @@ export interface InitOptions extends Pick<GoogleAuthPluginOptions, 'scopes' | 'c
    * @default false
    * @since 3.1.0
    * */
-  grantOfflineAccess: boolean;
+  grantOfflineAccess?: boolean;
 }
 
 export interface GoogleAuthPlugin {
-  signIn(): Promise<User>;
-  refresh(): Promise<Authentication>;
-  signOut(): Promise<any>;
+  /**
+   * Initializes the GoogleAuthPlugin, loading the gapi library and setting up the plugin.
+   * @param options - Optional initialization options.
+   * @since 3.1.0
+   */
+  initialize(options?: InitOptions): Promise<void>;
 
   /**
-   * Init hook for load gapi and init plugin
-   * @since 3.1.0
-   * */
-  initialize(options?: Partial<InitOptions>): void;
+   * Initiates the sign-in process and returns a Promise that resolves with the user information.
+   */
+  signIn(): Promise<User>;
+
+  /**
+   * Refreshes the authentication token and returns a Promise that resolves with the updated authentication details.
+   */
+  refresh(): Promise<Authentication>;
+
+  /**
+   * Signs out the user and returns a Promise.
+   */
+  signOut(): Promise<any>;
 }

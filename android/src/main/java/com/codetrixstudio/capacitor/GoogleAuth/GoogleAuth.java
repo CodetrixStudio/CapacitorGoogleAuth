@@ -36,6 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnFailureListener;
 
 @CapacitorPlugin()
 public class GoogleAuth extends Plugin {
@@ -106,6 +108,8 @@ public class GoogleAuth extends Plugin {
           user.put("idToken", account.getIdToken());
           user.put("authentication", authentication);
 
+          user.put("name", account.getDisplayName());
+          // Deprecated: Use `user` instead of `displayName`
           user.put("displayName", account.getDisplayName());
           user.put("email", account.getEmail());
           user.put("familyName", account.getFamilyName());
@@ -130,13 +134,40 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void refresh(final PluginCall call) {
-    call.reject("I don't know how to refresh token on Android");
+    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
+    if (account == null) {
+      call.reject("User not logged in.");
+    } else {
+      try {
+        JSONObject accessTokenObject = getAuthToken(account.getAccount(), true);
+
+        JSObject authentication = new JSObject();
+        authentication.put("idToken", account.getIdToken());
+        authentication.put(FIELD_ACCESS_TOKEN, accessTokenObject.get(FIELD_ACCESS_TOKEN));
+        authentication.put("refreshToken", "");
+        call.resolve(authentication);
+      } catch(Exception e){
+        e.printStackTrace();
+        call.reject("Something went wrong while retrieving access token", e);
+      }
+    }
   }
 
   @PluginMethod()
   public void signOut(final PluginCall call) {
-    googleSignInClient.signOut();
-    call.resolve();
+    googleSignInClient.signOut()
+      .addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
+        @Override
+          public void onSuccess(Void aVoid) {
+            call.resolve();
+          }
+      })
+      .addOnFailureListener(getActivity(), new OnFailureListener() {
+        @Override
+          public void onFailure(Exception e) {
+            call.reject("Sign out failed", e);
+          }
+      });
   }
 
   @PluginMethod()

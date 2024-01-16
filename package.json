@@ -1,6 +1,6 @@
 {
   "name": "@codetrix-studio/capacitor-google-auth",
-  "version": "3.3.2",
+  "version": "3.3.6",
   "description": "Google Auth plugin for capacitor.",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -10,7 +10,8 @@
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
     "prepare": "tsc",
-    "test": "echo \"no test specified\""
+    "test": "echo \"no test specified\"",
+    "docgen": "docgen --api GoogleAuthPlugin --output-readme README.md"
   },
   "author": "CodetrixStudio",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "@capacitor/android": "^5.0.4",
     "@capacitor/cli": "^5.0.4",
     "@capacitor/core": "^5.0.4",
+    "@capacitor/docgen": "^0.2.1",
     "@capacitor/ios": "^5.0.4",
     "@ionic/prettier-config": "^2.0.0",
     "@types/gapi": "0.0.42",
@@ -32,6 +34,8 @@
     "dist/",
     "ios/",
     "android/",
+    "!android/src/androidTest",
+    "!android/src/test",
     "CodetrixStudioCapacitorGoogleAuth.podspec"
   ],
   "keywords": [

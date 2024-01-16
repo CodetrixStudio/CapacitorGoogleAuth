@@ -39,7 +39,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
       scopes: [],
       grantOfflineAccess: false,
     }
-  ) {
+  ): Promise<void> {
     if (typeof window === 'undefined') {
       return;
     }
@@ -64,6 +64,7 @@ export class GoogleAuthWeb extends WebPlugin implements GoogleAuthPlugin {
     });
 
     this.addUserChangeListener();
+    return this.gapiLoaded;
   }
 
   platformJsLoaded() {

@@ -80,24 +80,12 @@ public class GoogleAuth: CAPPlugin {
             } else {
                 let presentingVc = self.bridge!.viewController!;
                 
-                self.googleSignIn.signIn(with: self.googleSignInConfiguration, presenting: presentingVc) { user, error in
+                self.googleSignIn.signIn(with: self.googleSignInConfiguration, presenting: presentingVc, hint: nil, additionalScopes: self.additionalScopes) { user, error in
                     if let error = error {
                         self.signInCall?.reject(error.localizedDescription, "\(error._code)");
                         return;
                     }
-                    if self.additionalScopes.count > 0 {
-                        // requesting additional scopes in GoogleSignIn-iOS SDK 6.0 requires that you sign the user in and then request additional scopes,
-                        // there's no method to include the additional scopes in the initial sign in request
-                        self.googleSignIn.addScopes(self.additionalScopes, presenting: presentingVc) { user, error in
-                            if let error = error {
-                                self.signInCall?.reject(error.localizedDescription);
-                                return;
-                            }
-                            self.resolveSignInCallWith(user: user!);
-                        }
-                    } else {
-                        self.resolveSignInCallWith(user: user!);
-                    }
+                    self.resolveSignInCallWith(user: user!);
                 };
             }
         }

@@ -1,3 +1,30 @@
+
+# [3.3.6](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.5...3.3.6) (2023-11-26)
+
+## What's Changed
+* refactor: deprecate `displayName`, use `name` property (Android) by @itsLucario in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/326
+* chore: integrate docgen by @reslear in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/327
+
+**Full Changelog**: https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.5...3.3.6
+
+# [3.3.5](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.4...3.3.5) (2023-11-17)
+
+## What's Changed
+* Update README.md by @Martin-Eckleben in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/323
+* Bump ios GoogleSignIn to 6.2.4 (Allows requesting scopes during initial signIn) by @Endrzei in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/321
+
+# [3.3.4](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.3...3.3.4) (2023-10-20)
+
+## What's Changed
+* Android refresh method by @CaolanCode in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/314
+
+# [3.3.3](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.2...3.3.3) (2023-10-09)
+
+## What's Changed
+* Demo Ionic Angular by @razmans in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/290
+* Fix #272, #55 by @mirko77 in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/288
+* Port android test stubs to capacitor 5, and exclude them from npm package by @adamschoenemann in https://github.com/CodetrixStudio/CapacitorGoogleAuth/pull/307
+
 # [3.3.2](https://github.com/CodetrixStudio/CapacitorGoogleAuth/compare/3.3.1...3.3.2) (2023-06-01)
 
 ## What's Changed
