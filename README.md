@@ -1,6 +1,6 @@
 <h1 align="center">CapacitorGoogleAuth</h1>
 <p align="center"><strong><code>@codetrix-studio/capacitor-google-auth</code></strong></p>
-<p align="center"><strong>CAPACITOR 6</strong></p>
+<p align="center"><strong>CAPACITOR 5</strong></p>
 <p align="center">
 Capacitor plugin for Google Auth.
 </p>
@@ -341,8 +341,6 @@ Install version 3.4.x:
 ```sh
 npm i --save @codetrix-studio/capacitor-google-auth@^3.4
 ```
-
-Follow instruction for you project [Updating to Capacitor 6](https://capacitorjs.com/docs/next/updating/6-0).
 
 #### Migrate from 3.2.x to 3.3.x
 
