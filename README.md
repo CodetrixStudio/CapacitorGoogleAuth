@@ -334,6 +334,14 @@ Signs out the user and returns a Promise.
 
 ## Migration guide
 
+#### Migrate from 3.3.x to 3.4.x
+
+Install version 3.4.x:
+
+```sh
+npm i --save @codetrix-studio/capacitor-google-auth@^3.4
+```
+
 #### Migrate from 3.2.x to 3.3.x
 
 Install version 3.3.x:
