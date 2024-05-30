@@ -99,14 +99,20 @@ initializeApp() {
 sign in function
 
 ```ts
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { Auth, GoogleAuthProvider, signInWithCredential } from '@angular/fire/auth';
+
 async googleSignIn() {
   let googleUser = await GoogleAuth.signIn();
 
   /*
     If you use Firebase you can forward and use the logged in Google user like this:
   */
-  const credential = auth.GoogleAuthProvider.credential(googleUser.authentication.idToken);
-  return this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
+  constructor(private auth: Auth){}
+
+  const googleUser = await GoogleAuth.signIn();
+  const _credential = GoogleAuthProvider.credential(googleUser.authentication.idToken);
+  return signInWithCredential(this.auth, _credential);
 }
 ```
 
