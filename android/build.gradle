@@ -3,6 +3,7 @@ ext {
     androidxAppCompatVersion = project.hasProperty('androidxAppCompatVersion') ? rootProject.ext.androidxAppCompatVersion : '1.6.1'
     androidxJunitVersion = project.hasProperty('androidxJunitVersion') ? rootProject.ext.androidxJunitVersion : '1.1.5'
     androidxEspressoCoreVersion = project.hasProperty('androidxEspressoCoreVersion') ? rootProject.ext.androidxEspressoCoreVersion : '3.5.1'
+    gmsPlayServicesAuthVersion = project.hasProperty('gmsPlayServicesAuthVersion') ? rootProject.ext.gmsPlayServicesAuthVersion : '21.2.0'
 }
 
 buildscript {
@@ -57,5 +58,5 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
-    implementation 'com.google.android.gms:play-services-auth:18.+'
+    implementation "com.google.android.gms:play-services-auth:$gmsPlayServicesAuthVersion"
 }
