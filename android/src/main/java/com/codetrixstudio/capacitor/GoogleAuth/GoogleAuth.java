@@ -80,6 +80,7 @@ public class GoogleAuth extends Plugin {
   public void signIn(PluginCall call) {
     if(googleSignInClient == null){
       rejectWithNullClientError(call);
+      return;
     }
     Intent signInIntent = googleSignInClient.getSignInIntent();
     startActivityForResult(call, signInIntent, "signInResult");
@@ -160,6 +161,7 @@ public class GoogleAuth extends Plugin {
   public void signOut(final PluginCall call) {
     if(googleSignInClient == null){
       rejectWithNullClientError(call);
+      return;
     }
     googleSignInClient.signOut()
       .addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
