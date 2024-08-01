@@ -170,6 +170,10 @@ plugin first use `androidClientId` if not found use `clientId` if not found use 
 </resources>
 ```
 
+Changing Play Services Auth version (Optional) :
+
+This plugin uses `com.google.android.gms:play-services-auth:21.2.0` by default, you can override it providing `gmsPlayServicesAuthVersion` at `variables.gradle`
+
 **Refresh method**
 
 This method should be called when the app is initialized to establish if the user is currently logged in. If true, the method will return an accessToken, idToken and an empty refreshToken.

@@ -78,6 +78,10 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void signIn(PluginCall call) {
+    if(googleSignInClient == null){
+      rejectWithNullClientError(call);
+      return;
+    }
     Intent signInIntent = googleSignInClient.getSignInIntent();
     startActivityForResult(call, signInIntent, "signInResult");
   }
@@ -155,6 +159,10 @@ public class GoogleAuth extends Plugin {
 
   @PluginMethod()
   public void signOut(final PluginCall call) {
+    if(googleSignInClient == null){
+      rejectWithNullClientError(call);
+      return;
+    }
     googleSignInClient.signOut()
       .addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
         @Override
@@ -256,5 +264,9 @@ public class GoogleAuth extends Plugin {
     }
     reader.close();
     return sb.toString();
+  }
+
+  private void rejectWithNullClientError(final PluginCall call) {
+    call.reject("Google services are not ready. Please call initialize() first");
   }
 }
