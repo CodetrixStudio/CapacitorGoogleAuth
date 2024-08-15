@@ -145,19 +145,17 @@ or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/Capaci
 
 3. Set **Client ID** one of the ways (by order of importance in the plugin):
    1. Set `clientId` in initialize method
-   2. Set `iosClientId` in initialize method
+   2. Set `iosClientId` in `capacitor.config.json`
    3. Set `clientId` in `capacitor.config.json`
-   4. Set `iosClientId` in `capacitor.config.json`
-   5. Set `CLIENT_ID` in `GoogleService-Info.plist`
+   4. Set `CLIENT_ID` in `GoogleService-Info.plist`
 
 ### Android
 
 Set **Client ID** (by order of importance in the plugin):
 1. Set `clientId` in initialize method
-2. Set `androidClientId` in initialize method
+2. Set `androidClientId` in `capacitor.config.json`
 3. Set `clientId` in `capacitor.config.json`
-4. Set `androidClientId` in `capacitor.config.json`
-5. Set `server_client_id` in `strings.xml`
+4. Set `server_client_id` in `strings.xml`
 
 ```xml
 <resources>
