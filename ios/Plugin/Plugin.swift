@@ -118,7 +118,9 @@ public class GoogleAuth: CAPPlugin {
     @objc
     func signOut(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
-            self.googleSignIn.signOut();
+            if self.googleSignIn != nil {
+                self.googleSignIn.signOut();
+            }
         }
         call.resolve();
     }
