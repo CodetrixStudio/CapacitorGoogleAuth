@@ -1,3 +1,6 @@
+> [!WARNING]
+> This plugin is now in low maintainance mode, for new feature like Credential manager or Privacy manifest please use: https://github.com/Cap-go/capacitor-social-login
+
 <h1 align="center">CapacitorGoogleAuth</h1>
 <p align="center"><strong><code>@codetrix-studio/capacitor-google-auth</code></strong></p>
 <p align="center"><strong>CAPACITOR 6</strong></p>
