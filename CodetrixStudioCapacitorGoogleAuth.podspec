@@ -10,6 +10,6 @@
     s.source_files = 'ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
     s.ios.deployment_target  = '12.0'
     s.dependency 'Capacitor'
-    s.dependency 'GoogleSignIn', '~> 6.2.4'
+    s.dependency 'GoogleSignIn', '~> 7.1.0'
     s.static_framework = true
   end

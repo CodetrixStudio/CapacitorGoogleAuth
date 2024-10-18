@@ -147,14 +147,11 @@ or see more [CapacitorGoogleAuth-Vue3-example](https://github.com/reslear/Capaci
 
 1. Create in Google cloud console credential **Client ID for iOS** and get **Client ID** and **iOS URL scheme**
 
-2. Add **identifier** `REVERSED_CLIENT_ID` as **URL schemes** to `Info.plist` from **iOS URL scheme**<br>
-   (Xcode: App - Targets/App - Info - URL Types, click plus icon)
+2. Add **identifier** `GIDClientID` to `Info.plist`<br>
+   `<key>GIDClientID</key><string>VALUE</string>`
 
-3. Set **Client ID** one of the ways (by order of importance in the plugin):
-   1. Set `clientId` in initialize method
-   2. Set `iosClientId` in `capacitor.config.json`
-   3. Set `clientId` in `capacitor.config.json`
-   4. Set `CLIENT_ID` in `GoogleService-Info.plist`
+3. Add **identifier** `REVERSED_CLIENT_ID` as **URL schemes** to `Info.plist` from **iOS URL scheme**<br>
+   (Xcode: App - Targets/App - Info - URL Types, click plus icon)
 
 ### Android
 
