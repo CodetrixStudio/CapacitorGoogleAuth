@@ -1,5 +1,6 @@
 > [!WARNING]
-> This plugin is now in low maintainance mode, for new feature like Credential manager or Privacy manifest please use: https://github.com/Cap-go/capacitor-social-login
+> This plugin is "virtually" archived as there no way to reach the maintainer in any medium, only one person with write rights @reslear and don't do native
+> Please use: https://github.com/Cap-go/capacitor-social-login as alternative follow [**migration here**](https://github.com/Cap-go/capacitor-social-login/blob/main/MIGRATION_CODETRIX.md)
 
 <h1 align="center">CapacitorGoogleAuth</h1>
 <p align="center"><strong><code>@codetrix-studio/capacitor-google-auth</code></strong></p>
